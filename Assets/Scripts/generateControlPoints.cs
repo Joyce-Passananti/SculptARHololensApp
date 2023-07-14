@@ -8,18 +8,23 @@ using UnityEngine.UI;
 
 public class generateControlPoints : MonoBehaviour
 {
+    // initial coil parameters
     public GameObject cube;
-
-    public Vector3 position;
+    public Vector3 position = new Vector3(0f,0f,0f);
     public float radius;
     public float layerHeight;
-    public float nbLayers;
+    public int nbLayers;
     public int nbPoints; // points in layer
 
     private GameObject sphere;
+    public float sphereSize;
     public List<GameObject> path = new List<GameObject>();
 
-    public float sphereSize;
+    // manipulation params
+    public float brushSizeHeight;
+    public float brushSizeWidth;
+    public string brushStyle;
+    public string manipulationType;
 
     private GameObject selected = null;
     private Vector3 initialSelPos;
@@ -130,11 +135,100 @@ public class generateControlPoints : MonoBehaviour
         {
             // correct y position to initial y position
             sel.transform.position = new Vector3(sel.transform.position.x, initialSelPos.y, sel.transform.position.z);
+            manipulate();
             drawToolpath();
 
             // stop updating toolpath
             this.selected = null;
             updatePath = false;
+        }
+    }
+    private void manipulate()
+    {
+        // sync old names
+        int pointsInLayers = nbPoints;
+        float brushSizeZ = brushSizeHeight;
+        int layers = nbLayers;
+
+        int selectedIndex = path.IndexOf(selected);
+
+
+        if (manipulationType == "shape")
+        {
+            int column = selectedIndex % pointsInLayers;
+
+            // new distance calculation
+            // based on displacement from past position
+            float disp = Vector3.Distance(initialSelPos, selected.transform.position);
+
+            // check if new radius is smaller --> displacement shoudld be negative
+            float pasth = Vector3.Distance(position, initialSelPos);                
+            float newh = Vector3.Distance(position, selected.transform.position);
+
+            if (pasth > newh)
+            {
+                disp *= -1;
+            }
+
+
+            if (disp != 0)
+            {
+                float zSize = (float)(Math.Floor(brushSizeZ * layers * layerHeight) * pointsInLayers);
+                // print(brushSizeZ * layerHeight, zSize)
+
+                int lowerColBound = Math.Max(0, (int)(selectedIndex - (int)(Math.Floor(pointsInLayers / 2 + zSize))));
+                int upperColBound = Math.Min((int)(pointsInLayers * layers), (int)(Math.Floor(pointsInLayers / 2 + zSize) + selectedIndex));
+                // print("lower", lowerColBound, "upper", upperColBound)
+
+                for (int c = lowerColBound; c < upperColBound; c++)
+                {
+                    float oldx, oldy, oldz;
+                    if (path[c] != selected)
+                    {
+                        oldx = path[c].transform.position.x;
+                        oldy = path[c].transform.position.y;
+                        oldz = path[c].transform.position.z;
+                    }
+                    else
+                    {
+                        oldx = initialSelPos.x;
+                        oldy = initialSelPos.y;
+                        oldz = initialSelPos.z;
+                    }
+
+                    float oldh = (float)Math.Sqrt(Math.Pow(oldx, 2) + Math.Pow(oldy, 2));
+                    float h = (float)((Math.Sqrt(Math.Pow(oldx, 2) + Math.Pow(oldy, 2)) + disp) / oldh);
+                    float w = 1;
+
+                    float zdist = Math.Abs(path[c].transform.position.y - selected.transform.position.y);
+                    if (zdist >= layerHeight)
+                    {
+                        zdist = zdist / layerHeight;
+                        // for exp
+                        if (brushStyle == "exponential")
+                        {
+                            w = (float)(1 - Math.Sqrt((zdist) / (zSize / pointsInLayers + 1)));
+                        }
+                        // for lin 
+                        if (brushStyle == "linear")
+                        {
+                            w = 1 - (zdist) / (zSize / pointsInLayers + 1);
+                        }
+                        // print(zSize / pointsInLayers, zdist, w)
+                    }
+
+                    float newX = (oldx * (2 - w) + oldx * h * w) / 2;
+                    float newZ = (oldz * (2 - w) + oldz * h * w) / 2;
+
+                    // c = Point3D(newX, newY, oldZ)
+                    path[c].transform.position = new Vector3(newX, oldy, newZ);
+                }
+                  
+            }
+        }
+        else if(manipulationType == "point")
+        {
+
         }
     }
 }

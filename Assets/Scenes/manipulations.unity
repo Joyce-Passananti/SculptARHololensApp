@@ -26482,10 +26482,14 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   radius: 20
   layerHeight: 3
-  nbLayers: 10
+  nbLayers: 5
   nbPoints: 25
-  path: []
   sphereSize: 0.01
+  path: []
+  brushSizeHeight: 2
+  brushSizeWidth: 2
+  brushStyle: linear
+  manipulationType: shape
 --- !u!4 &2141916206
 Transform:
   m_ObjectHideFlags: 0
