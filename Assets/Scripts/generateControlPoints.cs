@@ -10,7 +10,7 @@ public class generateControlPoints : MonoBehaviour
 {
     public GameObject cube;
 
-    public Vector3 position;// = new Vector3(0, 0, 0);
+    public Vector3 position;
     public float radius;
     public float layerHeight;
     public float nbLayers;
@@ -37,9 +37,17 @@ public class generateControlPoints : MonoBehaviour
         lineRenderer.endWidth = 0.01f;
         lineRenderer.useWorldSpace = true;
 
-        position = cube.transform.position;
+        cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cube.transform.position = position;
+        cube.transform.localScale = new Vector3(sphereSize, sphereSize, sphereSize);
+
+        cube.AddComponent<Interactable>();
+        cube.AddComponent<Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable>();
+
+        cube.AddComponent<ObjectManipulator>();
+        cube.GetComponent<ObjectManipulator>().OnManipulationEnded.AddListener(x => { initialToolPath(); Debug.Log("MOVED"); });
+
         initialToolPath();
-        drawToolpath();
     }
 
     // Update is called once per frame
@@ -53,7 +61,11 @@ public class generateControlPoints : MonoBehaviour
 
     public void initialToolPath()
     {
+        path.ForEach(x => { Destroy(x); });
+        path.Clear();
         position = cube.transform.position;
+        Debug.Log(position);
+
         // vectors = []
         for (int j = 0; j < nbLayers; j++)
         {
@@ -61,12 +73,13 @@ public class generateControlPoints : MonoBehaviour
             {
                 float angle = 360 / nbPoints;
                 sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                sphere.transform.position = new Vector3((position.x + radius * Mathf.Cos(i * angle * Mathf.PI / 180)) * .01f, (position.z + layerHeight * j) * .01f, (position.y + radius * Mathf.Sin(i * angle * Mathf.PI / 180)) * .01f);
+                sphere.transform.position = new Vector3(position.x + (radius * Mathf.Cos(i * angle * Mathf.PI / 180)) * .01f, position.z + (layerHeight * j) * .01f, position.y + (radius * Mathf.Sin(i * angle * Mathf.PI / 180)) * .01f);
                 sphere.transform.localScale = new Vector3(sphereSize, sphereSize, sphereSize);
                 addObjectComponents(sphere);
                 path.Add(sphere);
             }
         }
+        drawToolpath();
     }
 
     public void drawToolpath()
@@ -87,7 +100,7 @@ public class generateControlPoints : MonoBehaviour
 
         obj.AddComponent<ObjectManipulator>();
         obj.GetComponent<ObjectManipulator>().OnManipulationStarted.AddListener(HandleOnManipulationStarted);
-        obj.GetComponent<ObjectManipulator>().OnManipulationEnded.AddListener(HandleOnManipulationStarted);
+        obj.GetComponent<ObjectManipulator>().OnManipulationEnded.AddListener(HandleOnManipulationEnded);
 
         // obj.GetComponent<Interactable>().OnClick.AddListener(selected.selectObject(obj));
 
@@ -106,13 +119,21 @@ public class generateControlPoints : MonoBehaviour
     {
         if (status)
         {
+            // save initial position
+            initialSelPos = sel.transform.position;
+
+            // update toolpath with new position
             this.selected = sel;
             updatePath = true;
-            initialSelPos = sel.transform.position;
         }
         else
         {
-            this.selected = sel;
+            // correct y position to initial y position
+            sel.transform.position = new Vector3(sel.transform.position.x, initialSelPos.y, sel.transform.position.z);
+            drawToolpath();
+
+            // stop updating toolpath
+            this.selected = null;
             updatePath = false;
         }
     }
