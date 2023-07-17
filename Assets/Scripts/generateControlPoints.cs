@@ -5,12 +5,15 @@ using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using UnityEngine.UI;
+using System.Reflection;
 
 public class generateControlPoints : MonoBehaviour
 {
+    FieldInfo[] fields;
+
     // initial coil parameters
     public GameObject cube;
-    public Vector3 position = new Vector3(0f,0f,0f);
+    public Vector3 pos;
     public float radius;
     public float layerHeight;
     public int nbLayers;
@@ -35,6 +38,9 @@ public class generateControlPoints : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Type scriptClass = this.GetType();
+        fields = scriptClass.GetFields();
+
         lineRenderer = new GameObject("Line").AddComponent<LineRenderer>();
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.white;
@@ -43,7 +49,7 @@ public class generateControlPoints : MonoBehaviour
         lineRenderer.useWorldSpace = true;
 
         cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube.transform.position = position;
+        cube.transform.position = pos;
         cube.transform.localScale = new Vector3(sphereSize, sphereSize, sphereSize);
 
         cube.AddComponent<Interactable>();
@@ -68,8 +74,8 @@ public class generateControlPoints : MonoBehaviour
     {
         path.ForEach(x => { Destroy(x); });
         path.Clear();
-        position = cube.transform.position;
-        Debug.Log(position);
+        pos = cube.transform.position;
+        Debug.Log(pos);
 
         // vectors = []
         for (int j = 0; j < nbLayers; j++)
@@ -78,7 +84,7 @@ public class generateControlPoints : MonoBehaviour
             {
                 float angle = 360 / nbPoints;
                 sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                sphere.transform.position = new Vector3(position.x + (radius * Mathf.Cos(i * angle * Mathf.PI / 180)) * .01f, position.z + (layerHeight * j) * .01f, position.y + (radius * Mathf.Sin(i * angle * Mathf.PI / 180)) * .01f);
+                sphere.transform.position = new Vector3(pos.x + (radius * Mathf.Cos(i * angle * Mathf.PI / 180)) * .01f, pos.y + (layerHeight * j) * .01f, pos.z + (radius * Mathf.Sin(i * angle * Mathf.PI / 180)) * .01f);
                 sphere.transform.localScale = new Vector3(sphereSize, sphereSize, sphereSize);
                 addObjectComponents(sphere);
                 path.Add(sphere);
@@ -94,6 +100,18 @@ public class generateControlPoints : MonoBehaviour
         for(int i = 0; i<path.Count; i++)
         {
             lineRenderer.SetPosition(i, path[i].transform.position); //x,y and z position of the starting point of the line
+        }
+    }
+
+    public void updateParams(string param, object value)
+    {
+        foreach (var field in fields)
+        {
+            if (field.Name == param)
+            {
+                field.SetValue(this, value);
+                Debug.Log("The value was: " + field.GetValue(this).ToString());
+            }
         }
     }
 
@@ -148,11 +166,13 @@ public class generateControlPoints : MonoBehaviour
         // sync old names
         int pointsInLayers = nbPoints;
         float brushSizeZ = brushSizeHeight;
+        float brushWidth = brushSizeWidth;
+
         int layers = nbLayers;
 
         int selectedIndex = path.IndexOf(selected);
 
-
+                 
         if (manipulationType == "shape")
         {
             int column = selectedIndex % pointsInLayers;
@@ -162,8 +182,8 @@ public class generateControlPoints : MonoBehaviour
             float disp = Vector3.Distance(initialSelPos, selected.transform.position);
 
             // check if new radius is smaller --> displacement shoudld be negative
-            float pasth = Vector3.Distance(position, initialSelPos);                
-            float newh = Vector3.Distance(position, selected.transform.position);
+            float pasth = Vector3.Distance(pos, initialSelPos);                
+            float newh = Vector3.Distance(pos, selected.transform.position);
 
             if (pasth > newh)
             {
@@ -196,8 +216,8 @@ public class generateControlPoints : MonoBehaviour
                         oldz = initialSelPos.z;
                     }
 
-                    float oldh = (float)Math.Sqrt(Math.Pow(oldx, 2) + Math.Pow(oldy, 2));
-                    float h = (float)((Math.Sqrt(Math.Pow(oldx, 2) + Math.Pow(oldy, 2)) + disp) / oldh);
+                    float oldh = (float)Math.Sqrt(Math.Pow(oldx, 2) + Math.Pow(oldz, 2));
+                    float h = (float)((Math.Sqrt(Math.Pow(oldx, 2) + Math.Pow(oldz, 2)) + disp) / oldh);
                     float w = 1;
 
                     float zdist = Math.Abs(path[c].transform.position.y - selected.transform.position.y);
@@ -228,8 +248,48 @@ public class generateControlPoints : MonoBehaviour
         }
         else if(manipulationType == "point")
         {
+            int column = selectedIndex % pointsInLayers;
+            // print(column)
 
+            // cols = points[column::pointsInLayers]
+            // print[len(cols)]
+
+            float newX = selected.transform.position.x;
+            float newZ = selected.transform.position.z;
+            // print(newX, newY)
+
+
+            for (int i = 0; i < pointsInLayers; i++)
+            {
+                if (Math.Abs(i - column) < brushWidth * pointsInLayers / 360)
+                {
+                    for(int c=i; c<pointsInLayers; c++)
+                    {
+                        if(path[c] != selected)
+                        {
+                            float dist = 0; 
+                            float cdist = 0;
+                            if(brushStyle == "linear")
+                            {
+                                cdist = Math.Max(0, Math.Abs(i - column) / (brushWidth / 360 * pointsInLayers));
+                                dist = Math.Min(1, Math.Abs(path[c].transform.position.y - selected.transform.position.y) / layerHeight / layers / brushSizeZ);
+
+                            }
+                            else if (brushStyle == "exponential")
+                            {
+                                dist = (float)Math.Pow(Math.Min(1, Math.Abs(path[c].transform.position.y - selected.transform.position.y) / layerHeight / layers / brushSizeZ), 2) ;
+                                cdist = (float)Math.Pow(Math.Max(0, Math.Abs(i - column) / (brushWidth / 360 * pointsInLayers)), 2);
+                            }
+                            float weight = Math.Min(dist + cdist, 1);
+                            path[c].transform.position = new Vector3((newX * (1 - weight) + path[c].transform.position.x * weight), path[c].transform.position.y, (newZ * (1 - weight) + path[c].transform.position.z * weight));
+                           
+                        }
+                    }
+                }
+            }
+                
         }
+        drawToolpath();
     }
 }
     /*

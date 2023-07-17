@@ -32,7 +32,7 @@ public class exportToolpath : MonoBehaviour
         sb.AppendLine("nbPoints,radius");
         sb.AppendLine(controlPoints.nbPoints.ToString() + ',' + controlPoints.radius.ToString());
         sb.AppendLine("cx,cy,cz");
-        sb.AppendLine(controlPoints.position.ToString().Trim('(', ')'));
+        sb.AppendLine(controlPoints.pos.ToString().Trim('(', ')'));
         sb.AppendLine("x,y,z");
         for (int i = 0; i < controlPoints.path.Count; i++)
         {

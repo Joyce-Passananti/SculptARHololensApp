@@ -27,10 +27,13 @@ public class InputController : MonoBehaviour
     public Dropdown brushStyleDropdown;
     public Slider brushHeightSlider;
     public Slider brushWidthSlider;
+    private generateControlPoints controller;
 
     // Start is called before the first frame update
     void Start()
     {
+        controller = GetComponent<generateControlPoints>();
+
         coilRadiusSlider.onValueChanged.AddListener(UpdateCoilRadius);
         nbPointsSlider.onValueChanged.AddListener(UpdateNbPoints);
         nbLayersSlider.onValueChanged.AddListener(UpdateNnbLayers);
@@ -51,34 +54,42 @@ public class InputController : MonoBehaviour
     private void UpdateCoilRadius(float value)
     {
         coilRadius.text = string.Format("Coil Radius: {0:F1}", value);
+        controller.updateParams("radius", value);
     }
     private void UpdateNbPoints(float value)
     {
         nbPoints.text = string.Format("Coil Control Points: {0:F1}", value);
+        controller.updateParams("nbPoints", (int)value);
     }
     private void UpdateNnbLayers(float value)
     {
         nbLayers.text = string.Format("Coil Layers: {0:F1}", value);
+        controller.updateParams("nbLayers", (int)value);
     }
     private void UpdateLayerHeight(float value)
     {
         layerHeight.text = string.Format("Layer Height: {0:F1}", value);
+        controller.updateParams("layerHeight", value);
     }
 
     private void UpdateManipulationShape(int value)
     {
         manipulationShape.text = "Coil Manipulation: " + manipulationShapeDropdown.options[value].text;
+        controller.updateParams("manipulationType", manipulationShapeDropdown.options[value].text);
     }
     private void UpdateBrushStyle(int value)
     {
         brushStyle.text = "Brush Style: " + brushStyleDropdown.options[value].text;
+        controller.updateParams("brushStyle", brushStyleDropdown.options[value].text);
     }
     private void UpdateBrushHeight(float value)
     {
         brushHeight.text = string.Format("Brush Height: {0:F0}", value);
+        controller.updateParams("brushSizeHeight", value);
     }
     private void UpdateBrushWidth(float value)
     {
         brushWidth.text = string.Format("Layer Width: {0:F0}", value);
+        controller.updateParams("brushSizeWidth", value);
     }
 }
