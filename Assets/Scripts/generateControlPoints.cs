@@ -75,7 +75,6 @@ public class generateControlPoints : MonoBehaviour
         path.ForEach(x => { Destroy(x); });
         path.Clear();
         pos = cube.transform.position;
-        Debug.Log(pos);
 
         // vectors = []
         for (int j = 0; j < nbLayers; j++)
@@ -165,8 +164,8 @@ public class generateControlPoints : MonoBehaviour
     {
         // sync old names
         int pointsInLayers = nbPoints;
-        float brushSizeZ = brushSizeHeight;
-        float brushWidth = brushSizeWidth;
+        float brushSizeZ = brushSizeHeight/10;
+        float brushWidth = brushSizeWidth*10;
 
         int layers = nbLayers;
 
@@ -263,7 +262,7 @@ public class generateControlPoints : MonoBehaviour
             {
                 if (Math.Abs(i - column) < brushWidth * pointsInLayers / 360)
                 {
-                    for(int c=i; c<pointsInLayers; c++)
+                    for(int c=i; c<pointsInLayers*layers; c+= pointsInLayers)
                     {
                         if(path[c] != selected)
                         {
@@ -282,7 +281,8 @@ public class generateControlPoints : MonoBehaviour
                             }
                             float weight = Math.Min(dist + cdist, 1);
                             path[c].transform.position = new Vector3((newX * (1 - weight) + path[c].transform.position.x * weight), path[c].transform.position.y, (newZ * (1 - weight) + path[c].transform.position.z * weight));
-                           
+
+                            Debug.Log("" + c + ",," + path[c].transform.position + weight);
                         }
                     }
                 }
