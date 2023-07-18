@@ -163,8 +163,8 @@ public class generateControlPoints : MonoBehaviour
     {
         // sync old names
         int pointsInLayers = nbPoints;
-        float brushSizeZ = brushSizeHeight/10;
-        float brushWidth = brushSizeWidth*10;
+        float brushSizeZ = brushSizeHeight;
+        float brushWidth = brushSizeWidth;
         int layers = nbLayers;
 
         int selectedIndex = path.IndexOf(selected);
@@ -193,8 +193,8 @@ public class generateControlPoints : MonoBehaviour
                 float zSize = (float)(Math.Floor(brushSizeZ * layers * layerHeight) * pointsInLayers);
                 // print(brushSizeZ * layerHeight, zSize)
 
-                int lowerColBound = Math.Max(0, (int)(selectedIndex - (int)(Math.Floor(pointsInLayers / 2 + zSize))));
-                int upperColBound = Math.Min((int)(pointsInLayers * layers), (int)(Math.Floor(pointsInLayers / 2 + zSize) + selectedIndex));
+                int lowerColBound = Math.Max(0, (int)(selectedIndex - (int)(Math.Floor(brushSizeZ*pointsInLayers - pointsInLayers / 2))));
+                int upperColBound = Math.Min((int)(pointsInLayers * layers), (int)(Math.Floor(brushSizeZ*pointsInLayers - pointsInLayers / 2) + selectedIndex));
                 // print("lower", lowerColBound, "upper", upperColBound)
 
                 for (int c = lowerColBound; c < upperColBound; c++)
@@ -217,19 +217,19 @@ public class generateControlPoints : MonoBehaviour
                     float h = (float)((Math.Sqrt(Math.Pow(oldx, 2) + Math.Pow(oldz, 2)) + disp) / oldh);
                     float w = 1;
 
-                    float zdist = Math.Abs(path[c].transform.position.y - selected.transform.position.y);
-                    if (zdist >= layerHeight)
+                    float zdist = Math.Abs(c - selectedIndex)/pointsInLayers ;
+                    if (zdist >= 1)
                     {
-                        zdist = zdist / layerHeight;
+                        // zdist = zdist / layerHeight;
                         // for exp
                         if (brushStyle == "exponential")
                         {
-                            w = (float)(1 - Math.Sqrt((zdist) / (zSize / pointsInLayers + 1)));
+                            w = (float)(1 - Math.Sqrt((zdist) / (brushSizeZ + 1)));
                         }
                         // for lin 
                         if (brushStyle == "linear")
                         {
-                            w = 1 - (zdist) / (zSize / pointsInLayers + 1);
+                            w = 1 - (zdist) / (brushSizeZ + 1);
                         }
                     }
 
@@ -263,8 +263,8 @@ public class generateControlPoints : MonoBehaviour
             {
                 float zSize = (float)(Math.Floor(brushSizeZ * layers * layerHeight) * pointsInLayers);
 
-                int lowerColBound = Math.Max(0, (int)(selectedIndex - (int)(Math.Floor(pointsInLayers / 2 + zSize))));
-                int upperColBound = Math.Min((int)(pointsInLayers * layers), (int)(Math.Floor(pointsInLayers / 2 + zSize) + selectedIndex));
+                int lowerColBound = Math.Max(0, (int)(selectedIndex - (int)(Math.Floor(brushSizeZ * pointsInLayers - pointsInLayers / 2))));
+                int upperColBound = Math.Min((int)(pointsInLayers * layers), (int)(Math.Floor(brushSizeZ * pointsInLayers - pointsInLayers / 2) + selectedIndex));
 
                 for (int c = lowerColBound; c < upperColBound; c++)
                 {
@@ -323,24 +323,26 @@ public class generateControlPoints : MonoBehaviour
 
             for (int i = 0; i < pointsInLayers; i++)
             {
-                if (Math.Abs(i - column) < brushWidth * pointsInLayers / 360)
+                if (Math.Abs(i - column) < brushWidth + 1)
                 {
                     for(int c=i; c<pointsInLayers*layers; c+= pointsInLayers)
                     {
-                        if(path[c] != selected)
+                        if(Math.Abs(c - selectedIndex) / pointsInLayers < brushSizeZ)
+
                         {
-                            float dist = 0; 
-                            float cdist = 0;
+                            float dist = 1; 
+                            float cdist = 1;
+
                             if(brushStyle == "linear")
                             {
-                                cdist = Math.Max(0, Math.Abs(i - column) / (brushWidth / 360 * pointsInLayers));
-                                dist = Math.Min(1, Math.Abs(path[c].transform.position.y - selected.transform.position.y) / layerHeight / layers / brushSizeZ);
-
+                                cdist = Math.Max(0, Math.Abs(i - column) / (brushWidth + 1));
+                                dist = Math.Min(1, Math.Abs(c - selectedIndex) / pointsInLayers / (brushSizeZ + 1) );
+                                Debug.Log("col" + i + "cdist" + cdist + "dist " + dist + "w " + cdist*dist);
                             }
                             else if (brushStyle == "exponential")
                             {
-                                dist = (float)Math.Pow(Math.Min(1, Math.Abs(path[c].transform.position.y - selected.transform.position.y) / layerHeight / layers / brushSizeZ), 2) ;
-                                cdist = (float)Math.Pow(Math.Max(0, Math.Abs(i - column) / (brushWidth / 360 * pointsInLayers)), 2);
+                                dist = (float)Math.Pow(Math.Min(1, Math.Abs(c - selectedIndex) / pointsInLayers / (brushSizeZ + 1)), 2) ;
+                                cdist = (float)Math.Pow(Math.Max(0, Math.Abs(i - column) / (brushWidth + 1)), 2);
                             }
                             float weight = Math.Min(dist + cdist, 1);
                             path[c].transform.position = new Vector3((newX * (1 - weight) + path[c].transform.position.x * weight), path[c].transform.position.y, (newZ * (1 - weight) + path[c].transform.position.z * weight));
@@ -353,3 +355,33 @@ public class generateControlPoints : MonoBehaviour
         drawToolpath();
     }
 }
+/*float cdist = (Math.Abs(i - column)); //, Math.Abs(i - column - pointsInLayers)
+                if (cdist <= brushWidth)
+                {
+                    for(int c=i; c<pointsInLayers*layers; c+= pointsInLayers)
+                    {
+                        if(path[c] != selected)
+                        {
+                            float w = 1; 
+                            float cw = 1;
+
+                            float zdist = Math.Abs(c - selectedIndex) / pointsInLayers;
+                            if (zdist >= 1) 
+                            {
+                                if (brushStyle == "linear")
+                                {
+                                    w = (zdist) / (brushSizeZ + 1);
+                                    //cw = Math.Max(0, cdist / (brushWidth + 1));
+                                }
+                                else if (brushStyle == "exponential")
+                                {
+                                    w = (float)(Math.Sqrt((zdist) / (brushSizeZ + 1)));
+                                    //cw = (float)Math.Sqrt(Math.Max(0, cdist / (brushWidth + 1)));
+                                }
+                            }
+                            float weight = Math.Min(w*cw, 1);
+                            path[c].transform.position = new Vector3((newX * (1 - weight) + path[c].transform.position.x * weight), path[c].transform.position.y, (newZ * (1 - weight) + path[c].transform.position.z * weight));
+
+                        }
+                    }
+                }*/
