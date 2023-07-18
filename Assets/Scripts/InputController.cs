@@ -75,12 +75,12 @@ public class InputController : MonoBehaviour
     private void UpdateManipulationShape(int value)
     {
         manipulationShape.text = "Coil Manipulation: " + manipulationShapeDropdown.options[value].text;
-        controller.updateParams("manipulationType", manipulationShapeDropdown.options[value].text);
+        controller.updateParams("manipulationType", manipulationShapeDropdown.options[value].text.ToLower());
     }
     private void UpdateBrushStyle(int value)
     {
         brushStyle.text = "Brush Style: " + brushStyleDropdown.options[value].text;
-        controller.updateParams("brushStyle", brushStyleDropdown.options[value].text);
+        controller.updateParams("brushStyle", brushStyleDropdown.options[value].text.ToLower());
     }
     private void UpdateBrushHeight(float value)
     {
