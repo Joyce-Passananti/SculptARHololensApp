@@ -112,6 +112,7 @@ public class generateControlPoints : MonoBehaviour
         obj.AddComponent<Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable>();
 
         obj.AddComponent<ObjectManipulator>();
+        obj.GetComponent<ObjectManipulator>().AllowFarManipulation = true;
         obj.GetComponent<ObjectManipulator>().OnManipulationStarted.AddListener(HandleOnManipulationStarted);
         obj.GetComponent<ObjectManipulator>().OnManipulationEnded.AddListener(HandleOnManipulationEnded);
 
