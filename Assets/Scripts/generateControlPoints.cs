@@ -52,7 +52,10 @@ public class generateControlPoints : MonoBehaviour
         lineRenderer.endWidth = 0.001f;
         lineRenderer.useWorldSpace = true;
 
-        cube.GetComponent<ObjectManipulator>().OnManipulationEnded.AddListener(x => { initialToolPath(); });
+        cube.GetComponent<ObjectManipulator>().OnManipulationEnded.AddListener(x => {
+            cube.transform.rotation = Quaternion.identity;
+            cube.transform.GetChild(0).transform.rotation = Quaternion.identity;
+            drawToolpath(); });
 
     }
 

@@ -140,7 +140,7 @@ public class InputController : MonoBehaviour
     {
         layerHeightTitle.text = string.Format("Layer Height (mm): {0:F1}", value);
         controller.updateParams("layerHeight", value * .1f);
-        //controller.initialToolPath();
+        controller.drawToolpath();
     }
 
     private void UpdateManipulationShape(int value)
@@ -160,7 +160,7 @@ public class InputController : MonoBehaviour
     }
     private void UpdateBrushWidth(float value)
     {
-        brushHeightTitle.text = string.Format("Brush Height: {0:F0}", value);
+        brushWidthTitle.text = string.Format("Brush Width: {0:F0}", value);
         controller.updateParams("brushSizeWidth", value);
     }
 }
