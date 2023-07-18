@@ -41,13 +41,11 @@ public class generateControlPoints : MonoBehaviour
         Type scriptClass = this.GetType();
         fields = scriptClass.GetFields();
 
-
-
         lineRenderer = new GameObject("Line").AddComponent<LineRenderer>();
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.white;
-        lineRenderer.startWidth = 0.01f;
-        lineRenderer.endWidth = 0.01f;
+        lineRenderer.startWidth = 0.0025f;
+        lineRenderer.endWidth = 0.0025f;
         lineRenderer.useWorldSpace = true;
 
         cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -59,8 +57,6 @@ public class generateControlPoints : MonoBehaviour
 
         cube.AddComponent<ObjectManipulator>();
         cube.GetComponent<ObjectManipulator>().OnManipulationEnded.AddListener(x => { initialToolPath(); Debug.Log("MOVED"); });
-
-        initialToolPath();
     }
 
     // Update is called once per frame
