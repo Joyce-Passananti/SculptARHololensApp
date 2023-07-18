@@ -70,10 +70,10 @@ public class InputController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    public void InitControlPoints ()
+    public void InitControlPoints()
     {
         controller.updateParams("radius", radius);
         coilRadiusSlider.value = radius;
@@ -160,7 +160,7 @@ public class InputController : MonoBehaviour
     }
     private void UpdateBrushWidth(float value)
     {
-        brushWidthTitle.text = string.Format("Brush Width: {0:F0}", value);
+        brushHeightTitle.text = string.Format("Brush Height: {0:F0}", value);
         controller.updateParams("brushSizeWidth", value);
     }
 }

@@ -57,6 +57,7 @@ public class generateControlPoints : MonoBehaviour
 
         cube.AddComponent<ObjectManipulator>();
         cube.GetComponent<ObjectManipulator>().OnManipulationEnded.AddListener(x => { initialToolPath(); Debug.Log("MOVED"); });
+
     }
 
     // Update is called once per frame

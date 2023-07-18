@@ -3928,7 +3928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeProfile: {fileID: 11400000, guid: 7e7c962b9eb9dfa44993d5b2f2576752, type: 2}
+  activeProfile: {fileID: 11400000, guid: 31a611a779d3499e8e35f1a2018ca841, type: 2}
 --- !u!4 &874669245
 Transform:
   m_ObjectHideFlags: 0
@@ -4864,7 +4864,7 @@ Camera:
   m_GameObject: {fileID: 963194225}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -7476,7 +7476,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1606928858}
   m_Direction: 0
   m_MinValue: 1
-  m_MaxValue: 6
+  m_MaxValue: 10
   m_WholeNumbers: 0
   m_Value: 0.5
   m_OnValueChanged:
@@ -11224,11 +11224,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aac07a3767f85949aa2c31e9429464b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cube: {fileID: 0}
-  pos: {x: 0, y: 0, z: 0.2}
-  radius: 19.9
-  layerHeight: 3
-  nbLayers: 10
+  cube: {fileID: 1951963229}
+  pos: {x: 0, y: 0, z: 0}
+  radius: 5
+  layerHeight: 0.3
+  nbLayers: 15
   nbPoints: 15
   sphereSize: 0.005
   path: []
@@ -11277,10 +11277,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 5
   layerHeight: 3
-  nbLayers: 10
+  nbLayers: 15
   nbPoints: 15
-  brushSizeHeight: 1
-  brushSizeWidth: 1
+  brushSizeHeight: 3
+  brushSizeWidth: 3
   brushStyle: linear
   manipulationType: shape
   coilRadiusTitle: {fileID: 258261880}
