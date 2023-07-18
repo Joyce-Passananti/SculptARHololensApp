@@ -2308,84 +2308,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 459228624}
   m_CullTransparentMesh: 1
---- !u!1001 &466862170
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1405504231}
-    m_Modifications:
-    - target: {fileID: 8789376565540478542, guid: 259e08f8ccabf0149a5ffeb0705e5a13, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8789376565722460268, guid: 259e08f8ccabf0149a5ffeb0705e5a13, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8789376566977870029, guid: 259e08f8ccabf0149a5ffeb0705e5a13, type: 3}
-      propertyPath: m_Name
-      value: HandMenu_Small Variant
-      objectReference: {fileID: 0}
-    - target: {fileID: 8789376566977870029, guid: 259e08f8ccabf0149a5ffeb0705e5a13, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8789376566977870030, guid: 259e08f8ccabf0149a5ffeb0705e5a13, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8789376566977870030, guid: 259e08f8ccabf0149a5ffeb0705e5a13, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.32930002
-      objectReference: {fileID: 0}
-    - target: {fileID: 8789376566977870030, guid: 259e08f8ccabf0149a5ffeb0705e5a13, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.32399997
-      objectReference: {fileID: 0}
-    - target: {fileID: 8789376566977870030, guid: 259e08f8ccabf0149a5ffeb0705e5a13, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.2943
-      objectReference: {fileID: 0}
-    - target: {fileID: 8789376566977870030, guid: 259e08f8ccabf0149a5ffeb0705e5a13, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8789376566977870030, guid: 259e08f8ccabf0149a5ffeb0705e5a13, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8789376566977870030, guid: 259e08f8ccabf0149a5ffeb0705e5a13, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8789376566977870030, guid: 259e08f8ccabf0149a5ffeb0705e5a13, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8789376566977870030, guid: 259e08f8ccabf0149a5ffeb0705e5a13, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8789376566977870030, guid: 259e08f8ccabf0149a5ffeb0705e5a13, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8789376566977870030, guid: 259e08f8ccabf0149a5ffeb0705e5a13, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8789376567181112500, guid: 259e08f8ccabf0149a5ffeb0705e5a13, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 259e08f8ccabf0149a5ffeb0705e5a13, type: 3}
---- !u!4 &466862171 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8789376566977870030, guid: 259e08f8ccabf0149a5ffeb0705e5a13, type: 3}
-  m_PrefabInstance: {fileID: 466862170}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &487391145
 GameObject:
   m_ObjectHideFlags: 0
@@ -3000,8 +2922,6 @@ GameObject:
   m_Component:
   - component: {fileID: 656361036}
   - component: {fileID: 656361037}
-  - component: {fileID: 656361039}
-  - component: {fileID: 656361038}
   m_Layer: 5
   m_Name: ValueSlider
   m_TagString: Untagged
@@ -3082,39 +3002,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &656361038
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 656361035}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventsToReceive: 0
-  debounceThreshold: 0.01
-  localForward: {x: -0, y: -0, z: -1}
-  localUp: {x: 0, y: 1, z: 0}
-  localCenter: {x: 0, y: 0, z: 0}
-  bounds: {x: 0, y: 0}
-  touchableCollider: {fileID: 0}
---- !u!114 &656361039
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 656361035}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5afd5316c63705643b3daba5a6e923bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTetherWhenManipulating: 0
-  IsBoundsHandles: 0
 --- !u!1 &659972011
 GameObject:
   m_ObjectHideFlags: 0
@@ -3202,7 +3089,6 @@ GameObject:
   - component: {fileID: 676717847}
   - component: {fileID: 676717846}
   - component: {fileID: 676717845}
-  - component: {fileID: 676717848}
   m_Layer: 0
   m_Name: ManipulationType
   m_TagString: Untagged
@@ -3329,20 +3215,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 676717843}
   m_CullTransparentMesh: 1
---- !u!114 &676717848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 676717843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fcaf896491074042b7ed7684454a412, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventsToReceive: 0
-  debounceThreshold: 0.01
 --- !u!1 &688335298
 GameObject:
   m_ObjectHideFlags: 0
@@ -4056,7 +3928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeProfile: {fileID: 11400000, guid: 31a611a779d3499e8e35f1a2018ca841, type: 2}
+  activeProfile: {fileID: 11400000, guid: 7e7c962b9eb9dfa44993d5b2f2576752, type: 2}
 --- !u!4 &874669245
 Transform:
   m_ObjectHideFlags: 0
@@ -4671,7 +4543,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 10
+  m_text: 5
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
   m_sharedMaterial: {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
@@ -4992,7 +4864,7 @@ Camera:
   m_GameObject: {fileID: 963194225}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 2
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -5661,7 +5533,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 10
+  m_text: 6
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
   m_sharedMaterial: {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
@@ -7318,7 +7190,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4650336336254333257}
-  - {fileID: 466862171}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7604,8 +7475,8 @@ MonoBehaviour:
   m_FillRect: {fileID: 1377026755}
   m_HandleRect: {fileID: 1606928858}
   m_Direction: 0
-  m_MinValue: 0.5
-  m_MaxValue: 10
+  m_MinValue: 1
+  m_MaxValue: 6
   m_WholeNumbers: 0
   m_Value: 0.5
   m_OnValueChanged:
@@ -7837,7 +7708,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0.5
+  m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
   m_sharedMaterial: {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
@@ -11405,7 +11276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 5
-  layerHeight: 0.38
+  layerHeight: 3
   nbLayers: 10
   nbPoints: 15
   brushSizeHeight: 1

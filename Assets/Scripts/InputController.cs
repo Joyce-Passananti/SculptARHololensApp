@@ -81,7 +81,7 @@ public class InputController : MonoBehaviour
         nbPointsSlider.value = nbPoints;
         controller.updateParams("nbLayers", nbLayers);
         nbLayersSlider.value = nbLayers;
-        controller.updateParams("layerHeight", layerHeight);
+        controller.updateParams("layerHeight", layerHeight * .1f);
         layerHeightSlider.value = layerHeight;
         controller.initialToolPath();
         controller.updateParams("manipulationType", manipulationType);
@@ -96,11 +96,11 @@ public class InputController : MonoBehaviour
         coilRadiusTitle.text = string.Format("Coil Radius (cm): {0:F1}", radius);
         nbPointsTitle.text = string.Format("Coil Control Points (num): {0:F0}", nbPoints);
         nbLayersTitle.text = string.Format("Coil Layers (num): {0:F0}", nbLayers);
-        layerHeightTitle.text = string.Format("Layer Height (cm): {0:F1}", layerHeight);
+        layerHeightTitle.text = string.Format("Layer Height (mm): {0:F1}", layerHeight);
         manipulationShapeTitle.text = "Coil Manipulation: " + manipulationType;
         brushStyleTitle.text = "Brush Style: " + brushStyle;
-        brushHeightTitle.text = string.Format("Brush Height Points (num): {0:F0}", brushSizeHeight);
-        brushWidthTitle.text = string.Format("Layer Width Points (num): {0:F0}", brushSizeWidth);
+        brushHeightTitle.text = string.Format("Brush Height: {0:F0}", brushSizeHeight);
+        brushWidthTitle.text = string.Format("Brush Width: {0:F0}", brushSizeWidth);
 
         brushHeightMax.text = string.Format("{0:F0}", nbLayers);
         brushHeightSlider.maxValue = nbLayers;
@@ -138,8 +138,8 @@ public class InputController : MonoBehaviour
     }
     private void UpdateLayerHeight(float value)
     {
-        layerHeightTitle.text = string.Format("Layer Height (cm): {0:F1}", value);
-        controller.updateParams("layerHeight", value);
+        layerHeightTitle.text = string.Format("Layer Height (mm): {0:F1}", value);
+        controller.updateParams("layerHeight", value * .1f);
         controller.initialToolPath();
     }
 
@@ -155,12 +155,12 @@ public class InputController : MonoBehaviour
     }
     private void UpdateBrushHeight(float value)
     {
-        brushHeightTitle.text = string.Format("Brush Height Points (num): {0:F0}", value);
+        brushHeightTitle.text = string.Format("Brush Height: {0:F0}", value);
         controller.updateParams("brushSizeHeight", value);
     }
     private void UpdateBrushWidth(float value)
     {
-        brushWidthTitle.text = string.Format("Layer Width Points (num): {0:F0}", value);
+        brushWidthTitle.text = string.Format("Brush Width: {0:F0}", value);
         controller.updateParams("brushSizeWidth", value);
     }
 }
