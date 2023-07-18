@@ -35,6 +35,7 @@ public class generateControlPoints : MonoBehaviour
 
     private LineRenderer lineRenderer;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,8 +43,11 @@ public class generateControlPoints : MonoBehaviour
         fields = scriptClass.GetFields();
 
         lineRenderer = new GameObject("Line").AddComponent<LineRenderer>();
-        lineRenderer.startColor = Color.white;
-        lineRenderer.endColor = Color.white;
+        Material lineMaterial = new Material(Shader.Find("Particles/Standard Unlit"));
+        lineRenderer.material = lineMaterial;
+        Color newColor = new Color(95 / 255f, 223 / 255f, 194 / 255f);
+        lineRenderer.startColor = newColor;
+        lineRenderer.endColor = newColor;
         lineRenderer.startWidth = 0.001f;
         lineRenderer.endWidth = 0.001f;
         lineRenderer.useWorldSpace = true;
@@ -127,6 +131,8 @@ public class generateControlPoints : MonoBehaviour
         obj.GetComponent<ObjectManipulator>().AllowFarManipulation = true;
         obj.GetComponent<ObjectManipulator>().OnManipulationStarted.AddListener(HandleOnManipulationStarted);
         obj.GetComponent<ObjectManipulator>().OnManipulationEnded.AddListener(HandleOnManipulationEnded);
+
+        obj.AddComponent<HighlightObject>();
 
     }
     private void HandleOnManipulationStarted(ManipulationEventData eventData)
