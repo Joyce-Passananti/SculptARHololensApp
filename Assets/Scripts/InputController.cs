@@ -55,21 +55,25 @@ public class InputController : MonoBehaviour
     {
         coilRadius.text = string.Format("Coil Radius: {0:F1}", value);
         controller.updateParams("radius", value);
+        controller.initialToolPath();
     }
     private void UpdateNbPoints(float value)
     {
         nbPoints.text = string.Format("Coil Control Points: {0:F1}", value);
         controller.updateParams("nbPoints", (int)value);
+        controller.initialToolPath();
     }
     private void UpdateNnbLayers(float value)
     {
         nbLayers.text = string.Format("Coil Layers: {0:F1}", value);
         controller.updateParams("nbLayers", (int)value);
+        controller.initialToolPath();
     }
     private void UpdateLayerHeight(float value)
     {
         layerHeight.text = string.Format("Layer Height: {0:F1}", value);
         controller.updateParams("layerHeight", value);
+        controller.initialToolPath();
     }
 
     private void UpdateManipulationShape(int value)

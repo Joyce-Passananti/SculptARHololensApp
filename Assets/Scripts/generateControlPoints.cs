@@ -41,6 +41,8 @@ public class generateControlPoints : MonoBehaviour
         Type scriptClass = this.GetType();
         fields = scriptClass.GetFields();
 
+
+
         lineRenderer = new GameObject("Line").AddComponent<LineRenderer>();
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.white;
