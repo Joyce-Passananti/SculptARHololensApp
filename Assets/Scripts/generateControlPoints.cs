@@ -44,18 +44,19 @@ public class generateControlPoints : MonoBehaviour
         lineRenderer = new GameObject("Line").AddComponent<LineRenderer>();
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.white;
-        lineRenderer.startWidth = 0.0025f;
-        lineRenderer.endWidth = 0.0025f;
+        lineRenderer.startWidth = 0.001f;
+        lineRenderer.endWidth = 0.001f;
         lineRenderer.useWorldSpace = true;
 
-        cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        //cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
         cube.transform.position = pos;
-        cube.transform.localScale = new Vector3(sphereSize, sphereSize, sphereSize);
+        cube.transform.localScale = new Vector3(1f,1f,1f);
 
         cube.AddComponent<Interactable>();
         cube.AddComponent<Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable>();
 
         cube.AddComponent<ObjectManipulator>();
+        cube.GetComponent<ObjectManipulator>().AllowFarManipulation = true;
         cube.GetComponent<ObjectManipulator>().OnManipulationEnded.AddListener(x => { initialToolPath(); Debug.Log("MOVED"); });
 
     }
@@ -73,7 +74,7 @@ public class generateControlPoints : MonoBehaviour
     {
         path.ForEach(x => { Destroy(x); });
         path.Clear();
-        pos = cube.transform.position;
+        pos = Vector3.zero;
 
         // vectors = []
         for (int j = 0; j < nbLayers; j++)
@@ -82,7 +83,8 @@ public class generateControlPoints : MonoBehaviour
             {
                 float angle = 360 / nbPoints;
                 sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                sphere.transform.position = new Vector3(pos.x + (radius * Mathf.Cos(i * angle * Mathf.PI / 180)) * .01f, pos.y + (layerHeight * j) * .01f, pos.z + (radius * Mathf.Sin(i * angle * Mathf.PI / 180)) * .01f);
+                sphere.transform.SetParent(cube.transform);
+                sphere.transform.localPosition = new Vector3((radius * Mathf.Cos(i * angle * Mathf.PI / 180)) * .01f, (layerHeight * j) * .01f, (radius * Mathf.Sin(i * angle * Mathf.PI / 180)) * .01f);
                 sphere.transform.localScale = new Vector3(sphereSize, sphereSize, sphereSize);
                 addObjectComponents(sphere);
                 path.Add(sphere);
@@ -119,6 +121,7 @@ public class generateControlPoints : MonoBehaviour
         obj.AddComponent<Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable>();
 
         obj.AddComponent<ObjectManipulator>();
+        obj.GetComponent<ObjectManipulator>().AllowFarManipulation = true;
         obj.GetComponent<ObjectManipulator>().OnManipulationStarted.AddListener(HandleOnManipulationStarted);
         obj.GetComponent<ObjectManipulator>().OnManipulationEnded.AddListener(HandleOnManipulationEnded);
 
@@ -158,6 +161,7 @@ public class generateControlPoints : MonoBehaviour
     }
     private void manipulate()
     {
+
         // sync old names
         int pointsInLayers = nbPoints;
         float brushSizeZ = brushSizeHeight;
@@ -173,11 +177,12 @@ public class generateControlPoints : MonoBehaviour
 
             // new distance calculation
             // based on displacement from past position
-            float disp = Vector3.Distance(initialSelPos, selected.transform.position);
+            float disp = Vector3.Distance(initialSelPos, selected.transform.localPosition);
 
             // check if new radius is smaller --> displacement shoudld be negative
-            float pasth = Vector3.Distance(pos, initialSelPos);                
-            float newh = Vector3.Distance(pos, selected.transform.position);
+            float pasth = Vector3.Distance(Vector3.zero, initialSelPos);                
+            float newh = Vector3.Distance(Vector3.zero, selected.transform.localPosition);
+            Debug.Log(pos);
 
             if (pasth > newh)
             {
@@ -199,9 +204,9 @@ public class generateControlPoints : MonoBehaviour
                     float oldx, oldy, oldz;
                     if (path[c] != selected)
                     {
-                        oldx = path[c].transform.position.x;
-                        oldy = path[c].transform.position.y;
-                        oldz = path[c].transform.position.z;
+                        oldx = path[c].transform.localPosition.x;
+                        oldy = path[c].transform.localPosition.y;
+                        oldz = path[c].transform.localPosition.z;
                     }
                     else
                     {
@@ -233,7 +238,7 @@ public class generateControlPoints : MonoBehaviour
                     float newX = (oldx * (2 - w) + oldx * h * w) / 2;
                     float newZ = (oldz * (2 - w) + oldz * h * w) / 2;
 
-                    path[c].transform.position = new Vector3(newX, oldy, newZ);
+                    path[c].transform.localPosition = new Vector3(newX, oldy, newZ);
                 }
                   
             }
