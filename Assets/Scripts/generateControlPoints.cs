@@ -43,11 +43,11 @@ public class generateControlPoints : MonoBehaviour
         fields = scriptClass.GetFields();
 
         lineRenderer = new GameObject("Line").AddComponent<LineRenderer>();
-        Material lineMaterial = new Material(Shader.Find("Particles/Standard Unlit"));
-        lineRenderer.material = lineMaterial;
-        Color newColor = new Color(95 / 255f, 223 / 255f, 194 / 255f);
-        lineRenderer.startColor = newColor;
-        lineRenderer.endColor = newColor;
+        //Material lineMaterial = new Material(Shader.Find("Particles/Standard Unlit"));
+        //lineRenderer.material = lineMaterial;
+        //Color newColor = new Color(95 / 255f, 223 / 255f, 194 / 255f);
+        lineRenderer.startColor = Color.white;
+        lineRenderer.endColor = Color.white;
         lineRenderer.startWidth = 0.001f;
         lineRenderer.endWidth = 0.001f;
         lineRenderer.useWorldSpace = true;
