@@ -140,7 +140,7 @@ public class InputController : MonoBehaviour
     {
         layerHeightTitle.text = string.Format("Layer Height (mm): {0:F1}", value);
         controller.updateParams("layerHeight", value * .1f);
-        controller.initialToolPath();
+        //controller.initialToolPath();
     }
 
     private void UpdateManipulationShape(int value)

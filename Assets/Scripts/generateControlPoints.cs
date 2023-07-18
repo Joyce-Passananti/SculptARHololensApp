@@ -44,11 +44,11 @@ public class generateControlPoints : MonoBehaviour
         lineRenderer = new GameObject("Line").AddComponent<LineRenderer>();
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.white;
-        lineRenderer.startWidth = 0.0025f;
-        lineRenderer.endWidth = 0.0025f;
+        lineRenderer.startWidth = 0.001f;
+        lineRenderer.endWidth = 0.001f;
         lineRenderer.useWorldSpace = true;
 
-        cube.GetComponent<ObjectManipulator>().OnManipulationEnded.AddListener(x => { initialToolPath(); Debug.Log("MOVED"); });
+        cube.GetComponent<ObjectManipulator>().OnManipulationEnded.AddListener(x => { initialToolPath(); });
 
     }
 
@@ -100,10 +100,22 @@ public class generateControlPoints : MonoBehaviour
         {
             if (field.Name == param)
             {
-                field.SetValue(this, value);
+                if(param == "layerHeight")
+                {
+                    float oldLH = layerHeight;
+                    field.SetValue(this, value);
+                    foreach(GameObject p in path)
+                    {
+                        p.transform.localPosition = new Vector3(p.transform.localPosition.x, p.transform.localPosition.y * (layerHeight/oldLH), p.transform.localPosition.z);
+                    }
+                    drawToolpath();
+                } 
+                else
+                    field.SetValue(this, value);
             }
         }
     }
+
 
     private void addObjectComponents(GameObject obj)
     {
