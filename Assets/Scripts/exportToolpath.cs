@@ -28,6 +28,8 @@ public class exportToolpath : MonoBehaviour
 
     public void exportToolPath()
     {
+        StringBuilder sb = new System.Text.StringBuilder();
+
         generateControlPoints controlPoints = GetComponent<generateControlPoints>();
         sb.AppendLine("nbPoints,radius");
         sb.AppendLine(controlPoints.nbPoints.ToString() + ',' + controlPoints.radius.ToString());
@@ -40,12 +42,7 @@ public class exportToolpath : MonoBehaviour
             sb.AppendLine(string.Format("{0:F5},{1:F5},{2:F5}", pos.x, pos.y, pos.z));
         }
 
-        var folder = Application.streamingAssetsPath;
-
-        if (!Directory.Exists(folder)) folder = Application.persistentDataPath;
-
-
-        var filePath = Path.Combine(folder, "toolpath.csv");
+        var filePath = System.IO.Path.Combine(Application.persistentDataPath, "toolpath.csv");
 
         using (var writer = new StreamWriter(filePath, false))
         {
@@ -53,6 +50,7 @@ public class exportToolpath : MonoBehaviour
         }
 
         Debug.Log("Exported csv");
+        Debug.Log(filePath);
         Dialog.Open(DialogPrefabSmall, DialogButtonType.OK, "Export Completed", "Toolpath exported", true);
     }
 }
