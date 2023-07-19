@@ -39,9 +39,10 @@ public class exportToolpath : MonoBehaviour
             Vector3 pos = controlPoints.path[i].transform.position;
             sb.AppendLine(string.Format("{0:F5},{1:F5},{2:F5}", pos.x, pos.y, pos.z));
         }
+
         var folder = Application.streamingAssetsPath;
 
-        if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
+        if (!Directory.Exists(folder)) folder = Application.persistentDataPath;
 
 
         var filePath = Path.Combine(folder, "toolpath.csv");
