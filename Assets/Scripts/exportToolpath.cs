@@ -36,7 +36,7 @@ public class exportToolpath : MonoBehaviour
         sb.AppendLine("x,y,z");
         for (int i = 0; i < controlPoints.path.Count; i++)
         {
-            Vector3 pos = controlPoints.path[i].transform.position;
+            Vector3 pos = controlPoints.path[i].transform.localPosition;
             sb.AppendLine(string.Format("{0:F5},{1:F5},{2:F5}", pos.x, pos.y, pos.z));
         }
 
