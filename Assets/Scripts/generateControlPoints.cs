@@ -234,7 +234,7 @@ public class generateControlPoints : MonoBehaviour
                     {
                         // zdist = zdist / layerHeight;
                         // for exp
-                        if (brushStyle == "exponential")
+                        if (brushStyle == "squared")
                         {
                             w = (float)(1 - Math.Sqrt((zdist) / (brushSizeZ + 1)));
                         }
@@ -242,6 +242,11 @@ public class generateControlPoints : MonoBehaviour
                         if (brushStyle == "linear")
                         {
                             w = 1 - (zdist) / (brushSizeZ + 1);
+                        }
+                        // for exp 2
+                        if (brushStyle == "exponential")
+                        {
+                            w = (float)(1 - Math.Pow((zdist) / (brushSizeZ + 1), 2));
                         }
                     }
 
