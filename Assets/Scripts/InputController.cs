@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Microsoft.MixedReality.Toolkit.UI;
 
 public class InputController : MonoBehaviour
 {
@@ -28,6 +29,9 @@ public class InputController : MonoBehaviour
     public TextMeshProUGUI nbPointsTitle;
     public TextMeshProUGUI nbLayersTitle;
     public TextMeshProUGUI layerHeightTitle;
+
+    public PinchSlider testSlider;
+    public TextMeshPro testLabel;
 
     public Slider coilRadiusSlider;
     public Slider nbPointsSlider;
@@ -58,6 +62,8 @@ public class InputController : MonoBehaviour
         nbPointsSlider.onValueChanged.AddListener(UpdateNbPoints);
         nbLayersSlider.onValueChanged.AddListener(UpdateNnbLayers);
         layerHeightSlider.onValueChanged.AddListener(UpdateLayerHeight);
+
+        testSlider.OnValueUpdated.AddListener(TestSlider);
 
         manipulationShapeDropdown.onValueChanged.AddListener(UpdateManipulationShape);
         brushStyleDropdown.onValueChanged.AddListener(UpdateBrushStyle);
@@ -107,6 +113,23 @@ public class InputController : MonoBehaviour
         int brushWidthMaxvAL = ((int)nbPoints / 4) - 1;
         brushWidthMax.text = string.Format("{0:F0}", brushWidthMaxvAL);
         brushWidthSlider.maxValue = brushWidthMaxvAL;
+    }
+
+    private void TestSlider(SliderEventData eventData)
+    {
+        float originalValue = eventData.NewValue;  // Assuming NewValue is between 0 and 1 for a typical slider.
+
+        // Define your desired minimum and maximum values
+        float desiredMin = 1;
+        float desiredMax = 5;
+
+        float mappedValue = Remap(originalValue, 0f, 1f, desiredMin, desiredMax);
+        testLabel.text = $"{mappedValue:F2}";
+    }
+
+    public float Remap(float value, float from1, float to1, float from2, float to2)
+    {
+        return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
     }
 
     private void UpdateCoilRadius(float value)
