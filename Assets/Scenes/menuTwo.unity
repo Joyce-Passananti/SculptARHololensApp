@@ -3237,6 +3237,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7993839106200101936, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}
   m_PrefabInstance: {fileID: 154430298}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &511884948 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7993839106200101939, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}
+  m_PrefabInstance: {fileID: 154430298}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d11c9594c7919e41991b47c0a9275f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &532801890
 GameObject:
   m_ObjectHideFlags: 0
@@ -3805,6 +3816,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 617634172}
   m_CullTransparentMesh: 0
+--- !u!114 &628864355 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7993839106200101939, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}
+  m_PrefabInstance: {fileID: 5842008468624436498}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d11c9594c7919e41991b47c0a9275f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &656361035
 GameObject:
   m_ObjectHideFlags: 0
@@ -4289,7 +4311,7 @@ GameObject:
   - component: {fileID: 691578110}
   - component: {fileID: 691578109}
   m_Layer: 0
-  m_Name: SliderValue
+  m_Name: CoilRadiusSliderValue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12384,7 +12406,7 @@ GameObject:
   - component: {fileID: 2007284383}
   - component: {fileID: 2007284382}
   m_Layer: 0
-  m_Name: SliderValue
+  m_Name: CoilControlPointsSliderValue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12878,6 +12900,17 @@ Transform:
   m_Father: {fileID: 1824247647}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2108201964 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7993839106200101939, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}
+  m_PrefabInstance: {fileID: 5842008467238889699}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d11c9594c7919e41991b47c0a9275f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2137031065
 GameObject:
   m_ObjectHideFlags: 0
@@ -13184,16 +13217,14 @@ MonoBehaviour:
   brushSizeWidth: 3
   brushStyle: linear
   manipulationType: shape
-  coilRadiusTitle: {fileID: 258261880}
-  nbPointsTitle: {fileID: 61988301}
-  nbLayersTitle: {fileID: 1538553711}
-  layerHeightTitle: {fileID: 1559753429}
-  testSlider: {fileID: 1869423394}
-  testLabel: {fileID: 691578109}
-  coilRadiusSlider: {fileID: 1840361499}
-  nbPointsSlider: {fileID: 1480819899}
-  nbLayersSlider: {fileID: 1428926560}
-  layerHeightSlider: {fileID: 1418855464}
+  coilRadiusTitle: {fileID: 691578109}
+  nbPointsTitle: {fileID: 2007284383}
+  nbLayersTitle: {fileID: 5842008468691918607}
+  layerHeightTitle: {fileID: 5842008467142235236}
+  coilRadiusSlider: {fileID: 1869423394}
+  nbPointsSlider: {fileID: 511884948}
+  nbLayersSlider: {fileID: 2108201964}
+  layerHeightSlider: {fileID: 628864355}
   manipulationShapeTitle: {fileID: 911320522}
   brushStyleTitle: {fileID: 2053056424}
   brushHeightTitle: {fileID: 1470176741}
@@ -20616,7 +20647,7 @@ GameObject:
   - component: {fileID: 5842008467142235236}
   - component: {fileID: 5842008467142235235}
   m_Layer: 0
-  m_Name: SliderValue
+  m_Name: CoilLayerHeightValue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22739,7 +22770,7 @@ GameObject:
   - component: {fileID: 5842008468691918607}
   - component: {fileID: 5842008468691918606}
   m_Layer: 0
-  m_Name: SliderValue
+  m_Name: CoilLayersSliderValue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
