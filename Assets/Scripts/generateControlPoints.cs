@@ -29,7 +29,8 @@ public class generateControlPoints : MonoBehaviour
     public string brushStyle;
     public string manipulationType;
 
-    private GameObject selected = null;
+    public GameObject selected = null;
+    public GameObject hoverSelected = null;
     private Vector3 initialSelPos;
     private Boolean updatePath = false;
 
@@ -140,15 +141,21 @@ public class generateControlPoints : MonoBehaviour
     }
     private void HandleOnManipulationStarted(ManipulationEventData eventData)
     {
-        selectObject(eventData.ManipulationSource, true);
+        if(hoverSelected)
+            selectObject(hoverSelected, true);
+        else
+            selectObject(eventData.ManipulationSource, true);
     }
 
     private void HandleOnManipulationEnded(ManipulationEventData eventData)
     {
-        selectObject(eventData.ManipulationSource, false);
+        if(hoverSelected)
+            selectObject(hoverSelected, false);
+        else
+            selectObject(eventData.ManipulationSource, false);
     }
 
-    private void selectObject(GameObject sel, Boolean status)
+    public void selectObject(GameObject sel, Boolean status)
     {
         if (status)
         {
@@ -157,6 +164,8 @@ public class generateControlPoints : MonoBehaviour
 
             // update toolpath with new position
             this.selected = sel;
+            manipulate();
+            drawToolpath();
             updatePath = true;
         }
         else
