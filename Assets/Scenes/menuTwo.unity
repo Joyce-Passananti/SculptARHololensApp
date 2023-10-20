@@ -589,7 +589,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4759724202073444424, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4759724202073444424, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}
       propertyPath: m_Positions.Array.data[0].x
@@ -633,7 +633,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4759724203258084770, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4759724203258084770, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}
       propertyPath: m_Positions.Array.data[0].x
@@ -942,7 +942,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4759724202073444424, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4759724202073444424, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}
       propertyPath: m_Positions.Array.data[0].x
@@ -986,7 +986,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4759724203258084770, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4759724203258084770, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}
       propertyPath: m_Positions.Array.data[0].x
@@ -20429,7 +20429,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5842008466628662453
 Transform:
   m_ObjectHideFlags: 0
@@ -20843,7 +20843,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4759724202073444424, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4759724202073444424, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}
       propertyPath: m_Positions.Array.data[0].x
@@ -20887,7 +20887,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4759724203258084770, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4759724203258084770, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}
       propertyPath: m_Positions.Array.data[0].x
@@ -22410,7 +22410,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4759724202073444424, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4759724202073444424, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}
       propertyPath: m_Positions.Array.data[0].x
@@ -22454,7 +22454,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4759724203258084770, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4759724203258084770, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}
       propertyPath: m_Positions.Array.data[0].x
@@ -23048,18 +23048,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 5842008467585049919}
-        m_TargetAssemblyTypeName: Logger, Assembly-CSharp
-        m_MethodName: LogMessage
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: '"ended"'
-          m_BoolArgument: 1
         m_CallState: 2
   onHoverEntered:
     m_PersistentCalls:

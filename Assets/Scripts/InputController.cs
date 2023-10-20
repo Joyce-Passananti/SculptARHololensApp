@@ -66,10 +66,10 @@ public class InputController : MonoBehaviour
     {
         controller = GetComponent<generateControlPoints>();
 
-        coilRadiusSlider.OnValueUpdated.AddListener(UpdateCoilRadius);
-        nbPointsSlider.OnValueUpdated.AddListener(UpdateNbPoints);
-        nbLayersSlider.OnValueUpdated.AddListener(UpdateNnbLayers);
-        layerHeightSlider.OnValueUpdated.AddListener(UpdateLayerHeight);
+        coilRadiusSlider.OnInteractionEnded.AddListener(UpdateCoilRadius);
+        nbPointsSlider.OnInteractionEnded.AddListener(UpdateNbPoints);
+        nbLayersSlider.OnInteractionEnded.AddListener(UpdateNnbLayers);
+        layerHeightSlider.OnInteractionEnded.AddListener(UpdateLayerHeight);
 
         manipulationShapeDropdown.onValueChanged.AddListener(UpdateManipulationShape);
         brushStyleDropdown.onValueChanged.AddListener(UpdateBrushStyle);
@@ -160,7 +160,7 @@ public class InputController : MonoBehaviour
 
     private void UpdateCoilRadius(SliderEventData eventData)
     {
-        float mappedValue = Remap(eventData.NewValue, 0f, 1f, radiusMin, radiusMax);
+        float mappedValue = Remap(eventData.Slider.SliderValue, 0f, 1f, radiusMin, radiusMax);
         coilRadiusTitle.text = $"{mappedValue:F2}";
         controller.updateParams("radius", mappedValue);
         controller.initialToolPath();
@@ -168,7 +168,7 @@ public class InputController : MonoBehaviour
 
     private void UpdateNbPoints(SliderEventData eventData)
     {
-        float mappedValue = Remap(eventData.NewValue, 0f, 1f, nbPointsMin, nbPointsMax);
+        float mappedValue = Remap(eventData.Slider.SliderValue, 0f, 1f, nbPointsMin, nbPointsMax);
         nbPointsTitle.text = $"{mappedValue:F2}";
         controller.updateParams("nbPoints", (int)mappedValue);
 
@@ -183,7 +183,7 @@ public class InputController : MonoBehaviour
 
     private void UpdateNnbLayers(SliderEventData eventData)
     {
-        float mappedValue = Remap(eventData.NewValue, 0f, 1f, nbLayersMin, nbLayersMax);
+        float mappedValue = Remap(eventData.Slider.SliderValue, 0f, 1f, nbLayersMin, nbLayersMax);
         nbLayersTitle.text = $"{mappedValue:F2}";
         controller.updateParams("nbLayers", (int)mappedValue);
 
@@ -197,7 +197,7 @@ public class InputController : MonoBehaviour
 
     private void UpdateLayerHeight(SliderEventData eventData)
     {
-        float mappedValue = Remap(eventData.NewValue, 0f, 1f, layerHeightMin, layerHeightMax);
+        float mappedValue = Remap(eventData.Slider.SliderValue, 0f, 1f, layerHeightMin, layerHeightMax);
         layerHeightTitle.text = $"{mappedValue:F2}";
         controller.updateParams("layerHeight", mappedValue * .1f);
         controller.drawToolpath();
