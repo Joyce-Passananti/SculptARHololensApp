@@ -24,7 +24,7 @@ public class HandPinMenu : MonoBehaviour
         pinned = false;
         if (objectManipulator != null)
         {
-            objectManipulator.OnManipulationEnded.AddListener(HandleManipulationEnded);
+            objectManipulator.OnManipulationStarted.AddListener(HandleManipulationStarted);
         }
     }
 
@@ -63,7 +63,7 @@ public class HandPinMenu : MonoBehaviour
             menuContent.SetActive(false);
         } 
     }
-    private void HandleManipulationEnded(ManipulationEventData eventData)
+    private void HandleManipulationStarted(ManipulationEventData eventData)
     {
         menuSolverHandler.UpdateSolvers = false;
         pinned = true;
