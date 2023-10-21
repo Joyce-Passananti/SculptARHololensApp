@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class HandPinMenu : MonoBehaviour
 {
-    public ObjectManipulator objectManipulator;
+    public ObjectManipulator[] objectManipulators;
     private SolverHandler menuSolverHandler;
     public GameObject menuContent;
 
@@ -22,9 +22,12 @@ public class HandPinMenu : MonoBehaviour
     void Start()
     {
         pinned = false;
-        if (objectManipulator != null)
+        foreach (var manipulator in objectManipulators)
         {
-            objectManipulator.OnManipulationStarted.AddListener(HandleManipulationStarted);
+            if (manipulator != null)
+            {
+                manipulator.OnManipulationStarted.AddListener(HandleManipulationStarted);
+            }
         }
     }
 

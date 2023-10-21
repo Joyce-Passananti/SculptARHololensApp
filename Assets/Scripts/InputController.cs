@@ -30,7 +30,7 @@ public class InputController : MonoBehaviour
     // 0 exponential
     // 1 linear
     public string brushStyle;
-    // 0 shape
+    // 0 shapeUpdateCoilRadius
     // 1 point
     // 0 pattern
     public string manipulationType;
@@ -66,10 +66,15 @@ public class InputController : MonoBehaviour
     {
         controller = GetComponent<generateControlPoints>();
 
+        coilRadiusSlider.OnValueUpdated.AddListener(DisplayCoilRadius);
+        nbPointsSlider.OnValueUpdated.AddListener(DisplayNbPoints);
+        nbLayersSlider.OnValueUpdated.AddListener(DisplayNbLayers);
+        layerHeightSlider.OnValueUpdated.AddListener(DisplayLayerHeight);
         coilRadiusSlider.OnInteractionEnded.AddListener(UpdateCoilRadius);
         nbPointsSlider.OnInteractionEnded.AddListener(UpdateNbPoints);
         nbLayersSlider.OnInteractionEnded.AddListener(UpdateNnbLayers);
         layerHeightSlider.OnInteractionEnded.AddListener(UpdateLayerHeight);
+
 
         manipulationShapeDropdown.onValueChanged.AddListener(UpdateManipulationShape);
         brushStyleDropdown.onValueChanged.AddListener(UpdateBrushStyle);
@@ -156,6 +161,30 @@ public class InputController : MonoBehaviour
     public float Remap(float value, float from1, float to1, float from2, float to2)
     {
         return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+    }
+
+    private void DisplayCoilRadius(SliderEventData eventData)
+    {
+        float mappedValue = Remap(eventData.NewValue, 0f, 1f, radiusMin, radiusMax);
+        coilRadiusTitle.text = $"{mappedValue:F2}";
+    }
+
+    private void DisplayNbPoints(SliderEventData eventData)
+    {
+        float mappedValue = Remap(eventData.NewValue, 0f, 1f, nbPointsMin, nbPointsMax);
+        nbPointsTitle.text = $"{mappedValue:F2}";
+    }
+
+    private void DisplayNbLayers(SliderEventData eventData)
+    {
+        float mappedValue = Remap(eventData.NewValue, 0f, 1f, nbLayersMin, nbLayersMax);
+        nbLayersTitle.text = $"{mappedValue:F2}";
+    }
+
+    private void DisplayLayerHeight(SliderEventData eventData)
+    {
+        float mappedValue = Remap(eventData.NewValue, 0f, 1f, layerHeightMin, layerHeightMax);
+        layerHeightTitle.text = $"{mappedValue:F2}";
     }
 
     private void UpdateCoilRadius(SliderEventData eventData)
