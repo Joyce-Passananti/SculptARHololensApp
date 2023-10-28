@@ -60,7 +60,7 @@ public class exportToolpath : MonoBehaviour
         }
         var folder = Application.streamingAssetsPath;
         if (!Directory.Exists(folder)) folder = Application.persistentDataPath;
-        folder = "Assets";
+        //folder = "Assets";
 
 
         var filePath = folder + "/toolpath.csv";
@@ -128,7 +128,7 @@ public class exportToolpath : MonoBehaviour
         //export gcode
         var folder = Application.streamingAssetsPath;
         if (!Directory.Exists(folder)) folder = Application.persistentDataPath;
-        folder = "Assets";
+        // folder = "Assets";
         var filePath = folder + "/gcode.txt";
         
         using (var writer = new StreamWriter(filePath, false))

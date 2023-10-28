@@ -25,7 +25,7 @@ public class generateControlPoints : MonoBehaviour
     private GameObject sphere;
     public float sphereSize;
     public List<GameObject> path = new List<GameObject>();
-    public List<GameObject> oldPath = new List<GameObject>();
+    public List<List<Vector3>> oldPath;
 
     // manipulation params
     public float brushSizeHeight;
@@ -100,7 +100,8 @@ public class generateControlPoints : MonoBehaviour
                 path.Add(sphere);
             }
         }
-        //oldPath = savePath();
+        oldPath = new List<List<Vector3>>();
+        oldPath.Add(savePath(path));
         drawToolpath();
     }
 
@@ -149,28 +150,29 @@ public class generateControlPoints : MonoBehaviour
 
         obj.AddComponent<HighlightObject>();
 
-        obj.GetComponent<ObjectManipulator>().enabled = false;
+        //obj.GetComponent<ObjectManipulator>().enabled = false;
     }
     private void HandleOnManipulationStarted(ManipulationEventData eventData) 
     {
-        if (hoverSelected)
-        {
-            //hoverSelected.GetComponent<ObjectManipulator>().AllowFarManipulation = true;
-            selectObject(hoverSelected, true);
-        }
+        oldPath.Add(savePath(path));
+        //if (hoverSelected)
+        //{
+        //    //hoverSelected.GetComponent<ObjectManipulator>().AllowFarManipulation = true;
+        //    selectObject(hoverSelected, true);
+        //}
         //else
-        //    selectObject(eventData.ManipulationSource, true);
+        selectObject(eventData.ManipulationSource, true);
     }
 
     private void HandleOnManipulationEnded(ManipulationEventData eventData)
     {
-        if (hoverSelected)
-        {
-            selectObject(hoverSelected, false);
-            hoverSelected.GetComponent<ObjectManipulator>().enabled = false;
-        }
+        //if (hoverSelected)
+        //{
+        //    selectObject(hoverSelected, false);
+        //    hoverSelected.GetComponent<ObjectManipulator>().enabled = false;
+        //}
         //else
-        //    selectObject(eventData.ManipulationSource, false);
+        selectObject(eventData.ManipulationSource, false);
     }
 
     private void selectObject(GameObject sel, Boolean status)
@@ -399,23 +401,32 @@ public class generateControlPoints : MonoBehaviour
         drawToolpath();
     }
 
-    public List<GameObject> savePath()
+    public List<Vector3> savePath(List<GameObject> path)
     {
-        MemoryStream ms = new MemoryStream();
-        BinaryFormatter bf = new BinaryFormatter();
-        bf.Serialize(ms, path);
+        List<Vector3> oldP = new List<Vector3>();
+        foreach (GameObject p in path)
+        {
+            oldP.Add(p.transform.localPosition);
+        }
 
-        ms.Position = 0;
-        return (List<GameObject>)bf.Deserialize(ms);
+        return oldP;
     }
     public void undo()
     {
         // path = oldPath;
-        path = oldPath;
+        if(oldPath.Count > 0)
+        {
+            for (int i = 0; i<path.Count; i++)
+            {
+                path[i].transform.localPosition = oldPath[oldPath.Count-1][i];
+            }
+            oldPath.RemoveAt(oldPath.Count-1);
 
-        drawToolpath();
-        print("undo!");
-    }
+            drawToolpath();
+            print("undo!");
+        }
+        
+    } 
 }
 /*float cdist = (Math.Abs(i - column)); //, Math.Abs(i - column - pointsInLayers)
                 if (cdist <= brushWidth)

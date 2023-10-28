@@ -25,8 +25,8 @@ public class HighlightObject : MonoBehaviour, IMixedRealityFocusHandler
             print(hoverCounter);
         }
 
-        // turn red after 5 seconds
-        if (hoverCounter > 200 && hovered)                                                
+        // turn red after 1 seconds
+        if (hoverCounter > 100 && hovered)                                                
         {
             hovered.GetComponent<Renderer>().material.color = new Color(0f, 1f, 0f);
             generateControlPoints.instance.hoverSelected = hovered;
@@ -41,8 +41,8 @@ public class HighlightObject : MonoBehaviour, IMixedRealityFocusHandler
         if (hovered == GetComponent<Renderer>().gameObject)
         {
             startCounter = true;
-            print("keep hover");
-        }
+            print("keep hover"); 
+        } 
         else
         {
             print("Start hover");
@@ -62,5 +62,13 @@ public class HighlightObject : MonoBehaviour, IMixedRealityFocusHandler
             controlPoints.hoverSelected = null;
         hoverCounter = 0;
         startCounter = false;
+        //delay 3 seconds
+
+        
+    }
+
+    public void unselect()
+    {
+        
     }
 }
