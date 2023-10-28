@@ -6,10 +6,13 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using UnityEngine.UI;
 using System.Reflection;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class generateControlPoints : MonoBehaviour
 {
     FieldInfo[] fields;
+    public static generateControlPoints instance;
 
     // initial coil parameters
     public GameObject cube;
@@ -22,6 +25,7 @@ public class generateControlPoints : MonoBehaviour
     private GameObject sphere;
     public float sphereSize;
     public List<GameObject> path = new List<GameObject>();
+    public List<GameObject> oldPath = new List<GameObject>();
 
     // manipulation params
     public float brushSizeHeight;
@@ -29,16 +33,24 @@ public class generateControlPoints : MonoBehaviour
     public string brushStyle;
     public string manipulationType;
 
-    private GameObject selected = null;
+    public GameObject selected = null;
+    public GameObject hoverSelected;
+
     private Vector3 initialSelPos;
     private Boolean updatePath = false;
 
     private LineRenderer lineRenderer;
 
+    private void Awake()
+    {
+        instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+        hoverSelected = null;
+
         Type scriptClass = this.GetType();
         fields = scriptClass.GetFields();
 
@@ -56,7 +68,7 @@ public class generateControlPoints : MonoBehaviour
             cube.transform.rotation = Quaternion.identity;
             cube.transform.GetChild(0).transform.rotation = Quaternion.identity;
             drawToolpath(); });
-
+        cube.GetComponent<ObjectManipulator>().enabled = false;
     }
 
     // Update is called once per frame
@@ -88,6 +100,7 @@ public class generateControlPoints : MonoBehaviour
                 path.Add(sphere);
             }
         }
+        //oldPath = savePath();
         drawToolpath();
     }
 
@@ -127,7 +140,6 @@ public class generateControlPoints : MonoBehaviour
     private void addObjectComponents(GameObject obj)
     {
         obj.AddComponent<ConstraintManager>();
-        obj.AddComponent<Interactable>();
         obj.AddComponent<Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable>();
 
         obj.AddComponent<ObjectManipulator>();
@@ -137,15 +149,28 @@ public class generateControlPoints : MonoBehaviour
 
         obj.AddComponent<HighlightObject>();
 
+        obj.GetComponent<ObjectManipulator>().enabled = false;
     }
-    private void HandleOnManipulationStarted(ManipulationEventData eventData)
+    private void HandleOnManipulationStarted(ManipulationEventData eventData) 
     {
-        selectObject(eventData.ManipulationSource, true);
+        if (hoverSelected)
+        {
+            //hoverSelected.GetComponent<ObjectManipulator>().AllowFarManipulation = true;
+            selectObject(hoverSelected, true);
+        }
+        //else
+        //    selectObject(eventData.ManipulationSource, true);
     }
 
     private void HandleOnManipulationEnded(ManipulationEventData eventData)
     {
-        selectObject(eventData.ManipulationSource, false);
+        if (hoverSelected)
+        {
+            selectObject(hoverSelected, false);
+            hoverSelected.GetComponent<ObjectManipulator>().enabled = false;
+        }
+        //else
+        //    selectObject(eventData.ManipulationSource, false);
     }
 
     private void selectObject(GameObject sel, Boolean status)
@@ -173,6 +198,8 @@ public class generateControlPoints : MonoBehaviour
     }
     private void manipulate()
     {
+        //oldPath = new List<GameObject>(path);
+
         // sync old names
         int pointsInLayers = nbPoints;
         float brushSizeZ = brushSizeHeight;
@@ -370,6 +397,24 @@ public class generateControlPoints : MonoBehaviour
                 
         }
         drawToolpath();
+    }
+
+    public List<GameObject> savePath()
+    {
+        MemoryStream ms = new MemoryStream();
+        BinaryFormatter bf = new BinaryFormatter();
+        bf.Serialize(ms, path);
+
+        ms.Position = 0;
+        return (List<GameObject>)bf.Deserialize(ms);
+    }
+    public void undo()
+    {
+        // path = oldPath;
+        path = oldPath;
+
+        drawToolpath();
+        print("undo!");
     }
 }
 /*float cdist = (Math.Abs(i - column)); //, Math.Abs(i - column - pointsInLayers)

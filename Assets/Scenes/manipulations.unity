@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3928,7 +3928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeProfile: {fileID: 11400000, guid: 7e7c962b9eb9dfa44993d5b2f2576752, type: 2}
+  activeProfile: {fileID: 11400000, guid: 31a611a779d3499e8e35f1a2018ca841, type: 2}
 --- !u!4 &874669245
 Transform:
   m_ObjectHideFlags: 0
@@ -4864,7 +4864,7 @@ Camera:
   m_GameObject: {fileID: 963194225}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -11483,6 +11483,8 @@ MonoBehaviour:
   brushSizeWidth: 3
   brushStyle: linear
   manipulationType: shape
+  selected: {fileID: 0}
+  hoverSelected: {fileID: 0}
 --- !u!4 &2141916206
 Transform:
   m_ObjectHideFlags: 0
@@ -11509,7 +11511,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d6d376681cf433499da8ce2b7c1d816, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  box_x: 280
+  box_y: 265
+  box_z: 305
+  nozzleW: 0
+  layerH: 0
+  printSpeed: 0
+  segmentL: []
+  e: []
+  partResult: []
+  modE: []
   DialogPrefabSmall: {fileID: 2680377478557818543, guid: 8e686c90124b8e14cbf8093893109e9a, type: 3}
+  startGCode: ";;; START GCODE ;;; \n M82 ;absolute extrusion mode \n G28; Home \n
+    G1 X207.5 Y202.5 Z20 F10000; Move X and Y to center, Z to 20mm high \n G1 E4000
+    F40000 ; !!Prime Extruder \n G92 E0 \n G1 F30000 E-150 \n ;;; ====== "
+  endGCode: ";;; === END GCODE === \n M83 ;Set to Relative Extrusion Mode \n G28
+    Z ;Home Z \n ; === DEPRESSURIZE === \n G91 \n G91 \n G1 E-1300 F4000 \n G90 \n
+    G9"
 --- !u!114 &2141916208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11560,6 +11578,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ae24ccdb615bed49a0de46a5745c7fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hovered: {fileID: 0}
+  hoverCounter: 0
 --- !u!23 &142823970884918192
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -14122,6 +14142,18 @@ MonoBehaviour:
       - m_Target: {fileID: 2141916207}
         m_TargetAssemblyTypeName: exportToolpath, Assembly-CSharp
         m_MethodName: exportToolPath
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2141916207}
+        m_TargetAssemblyTypeName: exportToolpath, Assembly-CSharp
+        m_MethodName: generateGCode
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -17318,7 +17350,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &4650336336254333262
 MonoBehaviour:
   m_ObjectHideFlags: 0
