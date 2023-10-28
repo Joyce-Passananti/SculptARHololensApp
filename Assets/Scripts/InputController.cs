@@ -11,12 +11,18 @@ public class InputController : MonoBehaviour
     // Min Max values of sliders
     private const float radiusMin = 2;
     private const float radiusMax = 20;
-    private const float layerHeightMin = 1;
-    private const float layerHeightMax = 6;
+    private const int layerHeightMin = 1;
+    private const int layerHeightMax = 4;
     private const int nbLayersMin = 5;
     private const int nbLayersMax = 50;
     private const int nbPointsMin = 5;
     private const int nbPointsMax = 30;
+    private const int brushHeightMin = 1;
+    // changes with #layers 
+    private int brushHeightMax = 10;
+    private const int brushWidthMin = 1;
+    // changes with # control points per layer
+    private int brushWidthMax = 10;
 
     // Initial coil values
     public float radius;
@@ -35,6 +41,9 @@ public class InputController : MonoBehaviour
     // 0 pattern
     public string manipulationType;
 
+    private string[] brushStyleKeys = new string[] { "linear", "exponential" };
+    private string[] manipulationTypeKeys = new string[] { "point", "shape", "pattern" };
+
     //Coil initial parameters
     public TextMeshPro coilRadiusTitle;
     public TextMeshPro nbPointsTitle;
@@ -47,19 +56,14 @@ public class InputController : MonoBehaviour
     public PinchSlider layerHeightSlider;
 
     //Coil manipulation parameters
-    public TextMeshProUGUI manipulationShapeTitle;
-    public TextMeshProUGUI brushStyleTitle;
-    public TextMeshProUGUI brushHeightTitle;
-    public TextMeshProUGUI brushWidthTitle;
+    public TextMeshPro brushHeightTitle;
+    public TextMeshPro brushWidthTitle;
 
-    public Dropdown manipulationShapeDropdown;
-    public Dropdown brushStyleDropdown;
-    public Slider brushHeightSlider;
-    public Slider brushWidthSlider;
+    public InteractableToggleCollection manipulationShapeToggle;
+    public InteractableToggleCollection brushStyleToggle;
+    public PinchSlider brushHeightSlider;
+    public PinchSlider brushWidthSlider;
     private generateControlPoints controller;
-
-    public TextMeshProUGUI brushHeightMax;
-    public TextMeshProUGUI brushWidthMax;
 
     // Start is called before the first frame update
     void Start()
@@ -75,11 +79,12 @@ public class InputController : MonoBehaviour
         nbLayersSlider.OnInteractionEnded.AddListener(UpdateNnbLayers);
         layerHeightSlider.OnInteractionEnded.AddListener(UpdateLayerHeight);
 
-
-        manipulationShapeDropdown.onValueChanged.AddListener(UpdateManipulationShape);
-        brushStyleDropdown.onValueChanged.AddListener(UpdateBrushStyle);
-        brushHeightSlider.onValueChanged.AddListener(UpdateBrushHeight);
-        brushWidthSlider.onValueChanged.AddListener(UpdateBrushWidth);
+        manipulationShapeToggle.OnSelectionEvents.AddListener(UpdateManipulationShape);
+        brushStyleToggle.OnSelectionEvents.AddListener(UpdateBrushStyle);
+        brushHeightSlider.OnValueUpdated.AddListener(DisplayBrushHeight);
+        brushWidthSlider.OnValueUpdated.AddListener(DisplayBrushWidth);
+        brushHeightSlider.OnInteractionEnded.AddListener(UpdateBrushHeight);
+        brushWidthSlider.OnInteractionEnded.AddListener(UpdateBrushWidth);
 
         InitControlPoints();
     }
@@ -93,70 +98,63 @@ public class InputController : MonoBehaviour
     public void InitControlPoints()
     {
 
-        //testSlider.SliderStepDivisions = nbLayersMax - nbLayersMin;
-        //testSlider.UseSliderStepDivisions = true;
-        //float testSliderValue = Remap(nbLayers, nbLayersMin, nbLayersMax, 0f, 1f);
-        //testSlider.SliderValue = testSliderValue;
-        //testLabel.text = $"{nbLayers:F2}";
-
         controller.updateParams("radius", radius);
         float coilRadiusSliderValue = Remap(radius, radiusMin, radiusMax, 0f, 1f);
         coilRadiusSlider.SliderValue = coilRadiusSliderValue;
-        coilRadiusTitle.text = $"{radius:F2}";
+        coilRadiusTitle.text = $"{radius:F2} (cm)";
 
         controller.updateParams("nbPoints", nbPoints);
         nbPointsSlider.SliderStepDivisions = nbPointsMax - nbPointsMin;
         nbPointsSlider.UseSliderStepDivisions = true;
         float nbPointsSliderValue = Remap(nbPoints, nbPointsMin, nbPointsMax, 0f, 1f);
         nbPointsSlider.SliderValue = nbPointsSliderValue;
-        nbPointsTitle.text = $"{nbPoints:F2}";
+        nbPointsTitle.text = $"{nbPoints:0}";
 
         controller.updateParams("nbLayers", nbLayers);
         nbLayersSlider.SliderStepDivisions = nbLayersMax - nbLayersMin;
         nbLayersSlider.UseSliderStepDivisions = true;
         float nbLayersSliderValue = Remap(nbLayers, nbLayersMin, nbLayersMax, 0f, 1f);
         nbLayersSlider.SliderValue = nbLayersSliderValue;
-        nbLayersTitle.text = $"{nbLayers:F2}";
+        nbLayersTitle.text = $"{nbLayers:0}";
 
 
         controller.updateParams("layerHeight", layerHeight * .1f);
+        layerHeightSlider.SliderStepDivisions = layerHeightMax - layerHeightMin;
+        layerHeightSlider.UseSliderStepDivisions = true;
         float layerHeightSliderValue = Remap(layerHeight, layerHeightMin, layerHeightMax, 0f, 1f);
         layerHeightSlider.SliderValue = layerHeightSliderValue;
-        layerHeightTitle.text = $"{layerHeight:F2}";
+        layerHeightTitle.text = $"{layerHeight:0} (mm)";
+     
 
         controller.initialToolPath();
         controller.updateParams("manipulationType", manipulationType);
-        brushStyleDropdown.value = 1;
+        brushStyleToggle.CurrentIndex = 1;
         controller.updateParams("brushStyle", brushStyle);
-        manipulationShapeDropdown.value = 0;
+        manipulationShapeToggle.CurrentIndex = 0;
+
+        brushHeightMax = nbLayers;
+        brushWidthMax = ((int)nbPoints / 4) - 1;
+
+
         controller.updateParams("brushSizeHeight", brushSizeHeight);
-        brushHeightSlider.value = brushSizeHeight;
+        brushHeightSlider.SliderStepDivisions = brushHeightMax - brushHeightMin;
+        brushHeightSlider.UseSliderStepDivisions = true;
+        float brushHeightSliderValue = Remap(brushSizeHeight, brushHeightMin, brushHeightMax, 0f, 1f);
+        brushHeightSlider.SliderValue = brushHeightSliderValue;
+        brushHeightTitle.text = $"{brushSizeHeight:0} (layers)";
+
+
         controller.updateParams("brushSizeWidth", brushSizeWidth);
-        brushWidthSlider.value = brushSizeWidth;
+        brushWidthSlider.SliderStepDivisions = brushWidthMax - brushWidthMin;
+        brushWidthSlider.UseSliderStepDivisions = true;
+        float brushWidthSliderValue = Remap(brushSizeWidth, brushWidthMin, brushWidthMax, 0f, 1f);
+        brushWidthSlider.SliderValue = brushWidthSliderValue;
+        brushWidthTitle.text = $"{brushSizeWidth:0} (points)";
 
-        manipulationShapeTitle.text = "Coil Manipulation: " + manipulationType;
-        brushStyleTitle.text = "Brush Style: " + brushStyle;
-        brushHeightTitle.text = string.Format("Brush Height: {0:F0}", brushSizeHeight);
-        brushWidthTitle.text = string.Format("Brush Width: {0:F0}", brushSizeWidth);
+        Debug.Log($"brush width{brushSizeWidth:0}");
+        Debug.Log($"brush width max{brushWidthMax:0}");
 
-        brushHeightMax.text = string.Format("{0:F0}", nbLayers);
-        brushHeightSlider.maxValue = nbLayers;
-        int brushWidthMaxvAL = ((int)nbPoints / 4) - 1;
-        brushWidthMax.text = string.Format("{0:F0}", brushWidthMaxvAL);
-        brushWidthSlider.maxValue = brushWidthMaxvAL;
     }
-
-    //private void TestSlider(SliderEventData eventData)
-    //{
-    //    float originalValue = eventData.NewValue;  // Assuming NewValue is between 0 and 1 for a typical slider.
-
-    //    // Define your desired minimum and maximum values
-    //    float desiredMin = 1;
-    //    float desiredMax = 5;
-
-    //    float mappedValue = Remap(originalValue, 0f, 1f, desiredMin, desiredMax);
-    //    testLabel.text = $"{mappedValue:F2}";
-    //}
 
     public float Remap(float value, float from1, float to1, float from2, float to2)
     {
@@ -166,31 +164,43 @@ public class InputController : MonoBehaviour
     private void DisplayCoilRadius(SliderEventData eventData)
     {
         float mappedValue = Remap(eventData.NewValue, 0f, 1f, radiusMin, radiusMax);
-        coilRadiusTitle.text = $"{mappedValue:F2}";
+        coilRadiusTitle.text = $"{mappedValue:F2} (cm)";
     }
 
     private void DisplayNbPoints(SliderEventData eventData)
     {
         float mappedValue = Remap(eventData.NewValue, 0f, 1f, nbPointsMin, nbPointsMax);
-        nbPointsTitle.text = $"{mappedValue:F2}";
+        nbPointsTitle.text = $"{mappedValue:0}";
     }
 
     private void DisplayNbLayers(SliderEventData eventData)
     {
         float mappedValue = Remap(eventData.NewValue, 0f, 1f, nbLayersMin, nbLayersMax);
-        nbLayersTitle.text = $"{mappedValue:F2}";
+        nbLayersTitle.text = $"{mappedValue:0}";
     }
 
     private void DisplayLayerHeight(SliderEventData eventData)
     {
         float mappedValue = Remap(eventData.NewValue, 0f, 1f, layerHeightMin, layerHeightMax);
-        layerHeightTitle.text = $"{mappedValue:F2}";
+        layerHeightTitle.text = $"{mappedValue:0} (mm)";
+    }
+
+    private void DisplayBrushHeight(SliderEventData eventData)
+    {
+        float mappedValue = Remap(eventData.NewValue, 0f, 1f, brushHeightMin, brushHeightMax);
+        brushHeightTitle.text = $"{mappedValue:0} (layers)";
+    }
+
+    private void DisplayBrushWidth(SliderEventData eventData)
+    {
+        float mappedValue = Remap(eventData.NewValue, 0f, 1f, brushWidthMin, brushWidthMax);
+        brushWidthTitle.text = $"{mappedValue:0} (points)";
     }
 
     private void UpdateCoilRadius(SliderEventData eventData)
     {
         float mappedValue = Remap(eventData.Slider.SliderValue, 0f, 1f, radiusMin, radiusMax);
-        coilRadiusTitle.text = $"{mappedValue:F2}";
+        coilRadiusTitle.text = $"{mappedValue:F2} (cm)";
         controller.updateParams("radius", mappedValue);
         controller.initialToolPath();
     }
@@ -198,13 +208,12 @@ public class InputController : MonoBehaviour
     private void UpdateNbPoints(SliderEventData eventData)
     {
         float mappedValue = Remap(eventData.Slider.SliderValue, 0f, 1f, nbPointsMin, nbPointsMax);
-        nbPointsTitle.text = $"{mappedValue:F2}";
+        nbPointsTitle.text = $"{mappedValue:0}";
         controller.updateParams("nbPoints", (int)mappedValue);
 
-        int brushWidthMaxvAL = ((int)((int)mappedValue / 4)) - 1;
-        brushWidthMax.text = string.Format("{0:F0}", brushWidthMaxvAL);
-        brushWidthSlider.maxValue = brushWidthMaxvAL;
-        brushWidthSlider.value = 1;
+        brushWidthMax = ((int)((int)mappedValue / 4)) - 1;
+        float brushWidthSliderValue = Remap(1, brushWidthMin, brushWidthMax, 0f, 1f);
+        brushWidthSlider.SliderValue = brushWidthSliderValue;
         controller.updateParams("brushSizeWidth", (int)1);
 
         controller.initialToolPath();
@@ -213,12 +222,12 @@ public class InputController : MonoBehaviour
     private void UpdateNnbLayers(SliderEventData eventData)
     {
         float mappedValue = Remap(eventData.Slider.SliderValue, 0f, 1f, nbLayersMin, nbLayersMax);
-        nbLayersTitle.text = $"{mappedValue:F2}";
+        nbLayersTitle.text = $"{mappedValue:0}";
         controller.updateParams("nbLayers", (int)mappedValue);
 
-        brushHeightMax.text = string.Format("{0:F0}", (int)mappedValue);
-        brushHeightSlider.maxValue = (int)mappedValue;
-        brushHeightSlider.value = 1;
+        brushHeightMax = (int)mappedValue;
+        float brushHeighSliderValue = Remap(1, brushHeightMin, brushHeightMax, 0f, 1f);
+        brushHeightSlider.SliderValue = brushHeighSliderValue;
         controller.updateParams("brushSizeHeight", (int)1);
 
         controller.initialToolPath();
@@ -227,29 +236,31 @@ public class InputController : MonoBehaviour
     private void UpdateLayerHeight(SliderEventData eventData)
     {
         float mappedValue = Remap(eventData.Slider.SliderValue, 0f, 1f, layerHeightMin, layerHeightMax);
-        layerHeightTitle.text = $"{mappedValue:F2}";
+        layerHeightTitle.text = $"{mappedValue:0} (mm)";
         controller.updateParams("layerHeight", mappedValue * .1f);
         controller.drawToolpath();
     }
 
-    private void UpdateManipulationShape(int value)
+    private void UpdateManipulationShape()
     {
-        manipulationShapeTitle.text = "Coil Manipulation: " + manipulationShapeDropdown.options[value].text;
-        controller.updateParams("manipulationType", manipulationShapeDropdown.options[value].text.ToLower());
+        int selectedIndex = manipulationShapeToggle.CurrentIndex;
+        controller.updateParams("manipulationType", manipulationTypeKeys[selectedIndex]);
     }
-    private void UpdateBrushStyle(int value)
+    private void UpdateBrushStyle()
     {
-        brushStyleTitle.text = "Brush Style: " + brushStyleDropdown.options[value].text;
-        controller.updateParams("brushStyle", brushStyleDropdown.options[value].text.ToLower());
+        int selectedIndex = brushStyleToggle.CurrentIndex;
+        controller.updateParams("brushStyle", brushStyleKeys[selectedIndex]);
     }
-    private void UpdateBrushHeight(float value)
+    private void UpdateBrushHeight(SliderEventData eventData)
     {
-        brushHeightTitle.text = string.Format("Brush Height: {0:F0}", value);
-        controller.updateParams("brushSizeHeight", value);
+        float mappedValue = Remap(eventData.Slider.SliderValue, 0f, 1f, brushHeightMin, brushHeightMax);
+        brushHeightTitle.text = $"{mappedValue:0}";
+        controller.updateParams("brushSizeHeight", (int)mappedValue);
     }
-    private void UpdateBrushWidth(float value)
+    private void UpdateBrushWidth(SliderEventData eventData)
     {
-        brushWidthTitle.text = string.Format("Brush Width: {0:F0}", value);
-        controller.updateParams("brushSizeWidth", value);
+        float mappedValue = Remap(eventData.Slider.SliderValue, 0f, 1f, brushWidthMin, brushWidthMax);
+        brushWidthTitle.text = $"{mappedValue:0}";
+        controller.updateParams("brushSizeWidth", (int)mappedValue);
     }
 }

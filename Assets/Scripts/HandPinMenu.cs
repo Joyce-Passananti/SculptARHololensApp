@@ -10,6 +10,7 @@ public class HandPinMenu : MonoBehaviour
     public ObjectManipulator[] objectManipulators;
     private SolverHandler menuSolverHandler;
     public GameObject menuContent;
+    public GameObject closeButton;
 
     private bool pinned;
 
@@ -40,6 +41,7 @@ public class HandPinMenu : MonoBehaviour
     public void CloseMenu()
     {
         pinned = false;
+        closeButton.SetActive(false);
         menuContent.SetActive(false);
         menuSolverHandler.UpdateSolvers = true;
     }
@@ -47,6 +49,7 @@ public class HandPinMenu : MonoBehaviour
     public void OpenMenu()
     {
         pinned = false;
+        closeButton.SetActive(false);
         menuContent.SetActive(true);
         menuSolverHandler.UpdateSolvers = true;
     }
@@ -68,6 +71,7 @@ public class HandPinMenu : MonoBehaviour
     }
     private void HandleManipulationStarted(ManipulationEventData eventData)
     {
+        closeButton.SetActive(true);
         menuSolverHandler.UpdateSolvers = false;
         pinned = true;
         // Your custom code here
