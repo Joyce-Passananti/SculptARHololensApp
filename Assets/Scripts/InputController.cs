@@ -70,21 +70,21 @@ public class InputController : MonoBehaviour
     {
         controller = GetComponent<generateControlPoints>();
 
-        coilRadiusSlider.OnValueUpdated.AddListener(DisplayCoilRadius);
-        nbPointsSlider.OnValueUpdated.AddListener(DisplayNbPoints);
-        nbLayersSlider.OnValueUpdated.AddListener(DisplayNbLayers);
-        layerHeightSlider.OnValueUpdated.AddListener(DisplayLayerHeight);
-        coilRadiusSlider.OnInteractionEnded.AddListener(UpdateCoilRadius);
-        nbPointsSlider.OnInteractionEnded.AddListener(UpdateNbPoints);
-        nbLayersSlider.OnInteractionEnded.AddListener(UpdateNnbLayers);
-        layerHeightSlider.OnInteractionEnded.AddListener(UpdateLayerHeight);
+        coilRadiusSlider.OnValueUpdated.AddListener(UpdateCoilRadius);
+        nbPointsSlider.OnValueUpdated.AddListener(UpdateNbPoints);
+        nbLayersSlider.OnValueUpdated.AddListener(UpdateNnbLayers);
+        layerHeightSlider.OnValueUpdated.AddListener(UpdateLayerHeight);
+        //coilRadiusSlider.OnInteractionEnded.AddListener(UpdateCoilRadius);
+        //nbPointsSlider.OnInteractionEnded.AddListener(UpdateNbPoints);
+        //nbLayersSlider.OnInteractionEnded.AddListener(UpdateNnbLayers);
+        //layerHeightSlider.OnInteractionEnded.AddListener(UpdateLayerHeight);
 
         manipulationShapeToggle.OnSelectionEvents.AddListener(UpdateManipulationShape);
         brushStyleToggle.OnSelectionEvents.AddListener(UpdateBrushStyle);
-        brushHeightSlider.OnValueUpdated.AddListener(DisplayBrushHeight);
-        brushWidthSlider.OnValueUpdated.AddListener(DisplayBrushWidth);
-        brushHeightSlider.OnInteractionEnded.AddListener(UpdateBrushHeight);
-        brushWidthSlider.OnInteractionEnded.AddListener(UpdateBrushWidth);
+        brushHeightSlider.OnValueUpdated.AddListener(UpdateBrushHeight);
+        brushWidthSlider.OnValueUpdated.AddListener(UpdateBrushWidth);
+        //brushHeightSlider.OnInteractionEnded.AddListener(UpdateBrushHeight);
+        //brushWidthSlider.OnInteractionEnded.AddListener(UpdateBrushWidth);
 
         InitControlPoints();
     }
