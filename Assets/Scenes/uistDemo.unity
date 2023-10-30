@@ -19654,7 +19654,6 @@ MonoBehaviour:
   brushStyle: linear
   manipulationType: shape
   selected: {fileID: 0}
-  hoverSelected: {fileID: 0}
 --- !u!4 &2141916206
 Transform:
   m_ObjectHideFlags: 0
@@ -19681,14 +19680,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d6d376681cf433499da8ce2b7c1d816, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  box_x: 280
-  box_y: 265
-  box_z: 305
-  newPos: []
-  segmentL: []
-  e: []
-  partResult: []
-  modE: []
   DialogPrefabSmall: {fileID: 2680377478557818543, guid: 8e686c90124b8e14cbf8093893109e9a, type: 3}
 --- !u!114 &2141916208
 MonoBehaviour:
@@ -23278,18 +23269,6 @@ MonoBehaviour:
       - m_Target: {fileID: 2141916207}
         m_TargetAssemblyTypeName: exportToolpath, Assembly-CSharp
         m_MethodName: exportToolPath
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2141916207}
-        m_TargetAssemblyTypeName: exportToolpath, Assembly-CSharp
-        m_MethodName: generateGCode
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
