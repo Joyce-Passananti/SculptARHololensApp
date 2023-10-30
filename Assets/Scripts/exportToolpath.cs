@@ -24,6 +24,7 @@ public class exportToolpath : MonoBehaviour
 
     //toolpath variables
     public List<Vector3> newPos = new List<Vector3>();
+
     public List<double> segmentL = new List<double>();
     public List<double> e = new List<double>();
     public List<double> partResult = new List<double>();
@@ -63,7 +64,7 @@ public class exportToolpath : MonoBehaviour
         //folder = "Assets";
 
 
-        var filePath = folder + "/toolpath.csv";
+        var filePath = folder + "/toolpath_csv.csv";
 
         using (var writer2 = new StreamWriter(filePath, false))
         {
@@ -83,6 +84,16 @@ public class exportToolpath : MonoBehaviour
         }
     }
 
+    public void setPrintParams()
+    {
+        generateControlPoints controlPoints = GetComponent<generateControlPoints>();
+
+        foreach (GameObject p in controlPoints.path)
+        {
+            newPos.Add(new Vector3(p.transform.localPosition.x * 1000 + box_x / 2, p.transform.localPosition.y * .5f * 1000 + box_y / 2, p.transform.localPosition.z * 1000));
+        }
+    }
+
     public void generateGCode()
     {
         print("SegmentL");
@@ -90,7 +101,7 @@ public class exportToolpath : MonoBehaviour
         double temp = layerH / nozzleW;
         print(temp + " " + box_x + " " + (4 / System.Math.PI + layerH / nozzleW));
         //generateControlPoints controlPoints = GetComponent<generateControlPoints>();
-        centerPoints();
+        setPrintParams();
 
         //calculate length of each line segments between points
         for (int i = 1; i < newPos.Count; i++)
@@ -129,7 +140,7 @@ public class exportToolpath : MonoBehaviour
         var folder = Application.streamingAssetsPath;
         if (!Directory.Exists(folder)) folder = Application.persistentDataPath;
         // folder = "Assets";
-        var filePath = folder + "/gcode.txt";
+        var filePath = folder + "/toolpath_gc.gcode";
         
         using (var writer = new StreamWriter(filePath, false))
         {

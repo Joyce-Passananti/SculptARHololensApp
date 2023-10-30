@@ -118,7 +118,7 @@ public class InputController : MonoBehaviour
         nbLayersTitle.text = $"{nbLayers:0}";
 
 
-        controller.updateParams("layerHeight", layerHeight * .1f);
+        controller.updateParams("layerHeight", layerHeight * .2f);
         layerHeightSlider.SliderStepDivisions = layerHeightMax - layerHeightMin;
         layerHeightSlider.UseSliderStepDivisions = true;
         float layerHeightSliderValue = Remap(layerHeight, layerHeightMin, layerHeightMax, 0f, 1f);
@@ -237,7 +237,7 @@ public class InputController : MonoBehaviour
     {
         float mappedValue = Remap(eventData.Slider.SliderValue, 0f, 1f, layerHeightMin, layerHeightMax);
         layerHeightTitle.text = $"{mappedValue:0} (mm)";
-        controller.updateParams("layerHeight", mappedValue * .1f);
+        controller.updateParams("layerHeight", mappedValue * .2f);
         controller.drawToolpath();
     }
 
