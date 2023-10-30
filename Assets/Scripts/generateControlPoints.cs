@@ -34,7 +34,7 @@ public class generateControlPoints : MonoBehaviour
     public string manipulationType;
 
     public GameObject selected = null;
-    public GameObject hoverSelected;
+    // public GameObject hoverSelected;
 
     private Vector3 initialSelPos;
     private Boolean updatePath = false;
@@ -49,7 +49,7 @@ public class generateControlPoints : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        hoverSelected = null;
+        // hoverSelected = null;
 
         Type scriptClass = this.GetType();
         fields = scriptClass.GetFields();
@@ -155,23 +155,12 @@ public class generateControlPoints : MonoBehaviour
     private void HandleOnManipulationStarted(ManipulationEventData eventData) 
     {
         oldPath.Add(savePath(path));
-        //if (hoverSelected)
-        //{
-        //    //hoverSelected.GetComponent<ObjectManipulator>().AllowFarManipulation = true;
-        //    selectObject(hoverSelected, true);
-        //}
-        //else
+
         selectObject(eventData.ManipulationSource, true);
     }
 
     private void HandleOnManipulationEnded(ManipulationEventData eventData)
     {
-        //if (hoverSelected)
-        //{
-        //    selectObject(hoverSelected, false);
-        //    hoverSelected.GetComponent<ObjectManipulator>().enabled = false;
-        //}
-        //else
         selectObject(eventData.ManipulationSource, false);
     }
 
